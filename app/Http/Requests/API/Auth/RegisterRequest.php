@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Requests\API\Auth;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
+
+class RegisterRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name'      => ['required', 'string', 'max:255'],
+            'email'     => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'phone'     => ['required', 'string', 'max:20', 'unique:users,phone'],
+            'password'  => ['required', 'confirmed', Password::min(8)->mixedCase()->symbols()],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name'     => __('validation.attributes.name'),
+            'email'    => __('validation.attributes.email'),
+            'phone'    => __('validation.attributes.phone'),
+            'password' => __('validation.attributes.password'),
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required'     => __('validation.required', ['attribute' => __('validation.attributes.name')]),
+            'name.string'       => __('validation.string', ['attribute' => __('validation.attributes.name')]),
+            'email.required'    => __('validation.required', ['attribute' => __('validation.attributes.email')]),
+            'email.email'       => __('validation.email', ['attribute' => __('validation.attributes.email')]),
+            'email.unique'      => __('validation.unique', ['attribute' => __('validation.attributes.email')]),
+            'phone.required'    => __('validation.required', ['attribute' => __('validation.attributes.phone')]),
+            'phone.unique'      => __('validation.unique', ['attribute' => __('validation.attributes.phone')]),
+            'password.required' => __('validation.required', ['attribute' => __('validation.attributes.password')]),
+            'password.min'      => __('validation.min.string', ['attribute' => __('validation.attributes.password'), 'min' => 8]),
+            'password.confirmed'=> __('validation.confirmed', ['attribute' => __('validation.attributes.password')]),
+        ];
+    }
+}
