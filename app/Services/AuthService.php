@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Company;
 use App\Models\UserProfile;
 use Illuminate\Support\Facades\DB;
 
@@ -29,33 +30,40 @@ class AuthService
      */
     public function register(array $data): JsonResponse
     {
-        $user = User::create([
-            'name'      => $data['name'],
-            'email'     => $data['email'],
-            'phone'     => $data['phone'],
-            'password'  => Hash::make($data['password']),
-            'user_type' => 'company',
-            'status'    => 'pending',
-        ]);
+        return DB::transaction(function () use ($data) {
+            $user = User::create([
+                'name'      => $data['name'],
+                'email'     => $data['email'],
+                'phone'     => $data['phone'],
+                'password'  => Hash::make($data['password']),
+                'user_type' => 'company',
+                'status'    => 'pending',
+            ]);
 
-        $code = (string) random_int(100000, 999999);
-        
-        Otp::create([
-            'user_id'    => $user->id,
-            'email'      => $user->email,
-            'phone'      => $user->phone,
-            'code'       => Hash::make($code),
-            'type'       => 'register',
-            'expires_at' => now()->addMinutes(5),
-        ]);
+            $company = Company::create([
+                'user_id'      => $user->id,
+                'company_name' => $data['name'],
+                'status'       => 'pending',
+            ]);
 
-        // إرسال الإيميل عبر الـ Queue
-        Mail::to($user->email)->queue(new OtpMail($code, $user->name));
+            $code = (string) random_int(100000, 999999);
+            
+            Otp::create([
+                'user_id'    => $user->id,
+                'email'      => $user->email,
+                'phone'      => $user->phone,
+                'code'       => Hash::make($code),
+                'type'       => 'register',
+                'expires_at' => now()->addMinutes(5),
+            ]);
 
-        return $this->successResponse([
-            'user'    => new UserResource($user),
-            'profile' => $user->companyProfile ? new CompanyProfileResource($user->companyProfile) : null,
-        ], __('messages.accountCreatedSuccessfully'), 201);
+            // إرسال الإيميل عبر الـ Queue
+            Mail::to($user->email)->queue(new OtpMail($code, $user->name));
+
+            return $this->successResponse([
+                'user'    => new UserResource($user),
+            ], __('messages.accountCreatedSuccessfully'), 201);
+        });
     }
 
     /**

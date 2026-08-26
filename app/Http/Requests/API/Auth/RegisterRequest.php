@@ -16,8 +16,8 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name'      => ['required', 'string', 'max:255'],
-            'email'     => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'phone'     => ['required', 'string', 'max:20', 'unique:users,phone'],
+            'email'     => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password'  => ['required', 'confirmed', Password::min(8)->mixedCase()->symbols()],
         ];
     }
@@ -26,8 +26,8 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name'     => __('validation.attributes.name'),
-            'email'    => __('validation.attributes.email'),
             'phone'    => __('validation.attributes.phone'),
+            'email'    => __('validation.attributes.email'),
             'password' => __('validation.attributes.password'),
         ];
     }
@@ -37,11 +37,11 @@ class RegisterRequest extends FormRequest
         return [
             'name.required'     => __('validation.required', ['attribute' => __('validation.attributes.name')]),
             'name.string'       => __('validation.string', ['attribute' => __('validation.attributes.name')]),
+            'phone.required'    => __('validation.required', ['attribute' => __('validation.attributes.phone')]),
+            'phone.unique'      => __('validation.unique', ['attribute' => __('validation.attributes.phone')]),
             'email.required'    => __('validation.required', ['attribute' => __('validation.attributes.email')]),
             'email.email'       => __('validation.email', ['attribute' => __('validation.attributes.email')]),
             'email.unique'      => __('validation.unique', ['attribute' => __('validation.attributes.email')]),
-            'phone.required'    => __('validation.required', ['attribute' => __('validation.attributes.phone')]),
-            'phone.unique'      => __('validation.unique', ['attribute' => __('validation.attributes.phone')]),
             'password.required' => __('validation.required', ['attribute' => __('validation.attributes.password')]),
             'password.min'      => __('validation.min.string', ['attribute' => __('validation.attributes.password'), 'min' => 8]),
             'password.confirmed'=> __('validation.confirmed', ['attribute' => __('validation.attributes.password')]),

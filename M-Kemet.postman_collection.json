@@ -90,7 +90,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"محمد عبد الله\",\n    \"email\": \"company@example.com\",\n    \"phone\": \"0507654321\",\n    \"password\": \"Password123#\",\n    \"password_confirmation\": \"Password123#\",\n    \"company_name\": \"شركة أم كميت للتوظيف\",\n    \"commercial_register_number\": \"1010123456\",\n    \"industry\": \"تكنولوجيا المعلومات والحلول الرقمية\",\n    \"country_id\": 1,\n    \"city\": \"الرياض\",\n    \"address\": \"طريق الملك فهد\"\n}"
+              "raw": "{\n    \"name\": \"شركة أم كميت للحلول البرمجية\",\n    \"phone\": \"0507654321\",\n    \"email\": \"company@example.com\",\n    \"password\": \"Password123#\",\n    \"password_confirmation\": \"Password123#\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/register/company",
