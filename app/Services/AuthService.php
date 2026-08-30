@@ -121,7 +121,7 @@ class AuthService
             $user->load(['country', 'candidateProfile.currentCountry', 'candidateProfile.genderRelation', 'countries']);
 
             return $this->successResponse([
-                'user' => new CandidateRegistrationResource($user->load('candidateProfile.personalInfo', 'candidateProfile.careerInfo')),
+                'user' => new CandidateRegistrationResource($user),
             ], __('messages.accountCreatedSuccessfully'), 201);
         });
     }
