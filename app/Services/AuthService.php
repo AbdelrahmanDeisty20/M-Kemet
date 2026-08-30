@@ -118,10 +118,15 @@ class AuthService
 
             Mail::to($user->email)->queue(new OtpMail($code, $user->name));
 
-            $user->load(['country', 'candidateProfile.currentCountry', 'candidateProfile.genderRelation', 'countries']);
+            $user->load([
+                'country',
+                'candidateProfile.personalInfo.currentCountry',
+                'candidateProfile.personalInfo.genderRelation',
+                'countries',
+            ]);
 
             return $this->successResponse([
-                'user' => new CandidateRegistrationResource($user),
+                'user' => new UserResource($user),
             ], __('messages.accountCreatedSuccessfully'), 201);
         });
     }

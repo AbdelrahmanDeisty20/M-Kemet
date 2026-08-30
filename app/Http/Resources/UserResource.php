@@ -16,9 +16,7 @@ class UserResource extends JsonResource
             'phone'             => $this->phone,
             'user_type'         => $this->user_type, // candidate, company, admin
             'account_status'    => $this->status, // active, pending, suspended
-            'country'           => new CountryResource($this->whenLoaded('country')),
-            'candidate_profile' => new CandidateProfileResource($this->whenLoaded('candidateProfile')),
-            'company_profile'   => new CompanyProfileResource($this->whenLoaded('companyProfile')),
+            'company_name'      => $this->company_name,
             'created_at'        => $this->created_at?->toDateTimeString(),
         ];
     }

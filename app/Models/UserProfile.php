@@ -54,6 +54,21 @@ class UserProfile extends Model
         return $this->belongsTo(Country::class, 'current_country_id');
     }
 
+    public function personalInfo(): HasOne
+    {
+        return $this->hasOne(UserProfile::class, 'id', 'id');
+    }
+
+    public function careerInfo(): HasOne
+    {
+        return $this->hasOne(UserProfile::class, 'id', 'id');
+    }
+
+    public function media(): HasOne
+    {
+        return $this->hasOne(UserProfile::class, 'id', 'id');
+    }
+
     public function targetCountries(): BelongsToMany
     {
         return $this->belongsToMany(Country::class, 'user_target_countries');
