@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
+use App\Http\Resources\CandidateRegisterResource;
+use App\Http\Resources\CompanyRegisterResource;
 use App\Http\Resources\UserResource;
-use App\Http\Resources\CandidateRegistrationResource;
 use App\Http\Resources\CandidateProfileResource;
 use App\Http\Resources\CompanyProfileResource;
 use App\Mail\OtpMail;
@@ -63,7 +64,7 @@ class AuthService
             Mail::to($user->email)->queue(new OtpMail($code, $user->name));
 
             return $this->successResponse([
-                'user'    => new UserResource($user),
+                'user'    => new CompanyRegisterResource($user->load('company')),
             ], __('messages.accountCreatedSuccessfully'), 201);
         });
     }
@@ -118,15 +119,10 @@ class AuthService
 
             Mail::to($user->email)->queue(new OtpMail($code, $user->name));
 
-            $user->load([
-                'country',
-                'candidateProfile.personalInfo.currentCountry',
-                'candidateProfile.personalInfo.genderRelation',
-                'countries',
-            ]);
+            $user->load(['country', 'candidateProfile.currentCountry', 'candidateProfile.genderRelation', 'countries']);
 
             return $this->successResponse([
-                'user' => new UserResource($user),
+                'user' => new CandidateRegisterResource($user->load('candidateProfile','country','candidateProfile.gender')),  
             ], __('messages.accountCreatedSuccessfully'), 201);
         });
     }

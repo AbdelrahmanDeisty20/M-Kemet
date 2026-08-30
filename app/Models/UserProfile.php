@@ -14,7 +14,6 @@ class UserProfile extends Model
     protected $fillable = [
         'user_id',
         'birth_date',
-        'gender',
         'gender_id',
         'current_country_id',
         'qualification',
@@ -42,32 +41,13 @@ class UserProfile extends Model
 
     public function gender(): BelongsTo
     {
-        return $this->belongsTo(Gender::class, 'gender_id');
+        return $this->belongsTo(Gender::class);
     }
 
-    public function genderRelation(): BelongsTo
-    {
-        return $this->belongsTo(Gender::class, 'gender_id');
-    }
 
     public function currentCountry(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'current_country_id');
-    }
-
-    public function personalInfo(): HasOne
-    {
-        return $this->hasOne(UserProfile::class, 'id', 'id');
-    }
-
-    public function careerInfo(): HasOne
-    {
-        return $this->hasOne(UserProfile::class, 'id', 'id');
-    }
-
-    public function media(): HasOne
-    {
-        return $this->hasOne(UserProfile::class, 'id', 'id');
     }
 
     public function targetCountries(): BelongsToMany
