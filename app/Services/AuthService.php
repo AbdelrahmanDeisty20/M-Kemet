@@ -45,7 +45,7 @@ class AuthService
 
             $company = Company::create([
                 'user_id'      => $user->id,
-                'company_name' => $data['name'],
+                'company_name' => $data['company_name'] ?? $data['name'],
                 'status'       => 'pending',
             ]);
 

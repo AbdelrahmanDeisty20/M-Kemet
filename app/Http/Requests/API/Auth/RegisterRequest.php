@@ -15,8 +15,9 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'      => ['required', 'string', 'max:255'],
-            'phone'     => ['required', 'string', 'max:20', 'unique:users,phone'],
+            'name'         => ['nullable', 'string', 'max:255'],
+            'company_name' => ['required', 'string', 'max:255'],
+            'phone'        => ['required', 'string', 'max:20', 'unique:users,phone'],
             'email'     => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password'  => ['required', 'confirmed', Password::min(8)->mixedCase()->symbols()],
         ];
@@ -25,10 +26,11 @@ class RegisterRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name'     => __('validation.attributes.name'),
-            'phone'    => __('validation.attributes.phone'),
-            'email'    => __('validation.attributes.email'),
-            'password' => __('validation.attributes.password'),
+            'name'         => __('validation.attributes.name'),
+            'company_name' => __('validation.attributes.company_name'),
+            'phone'        => __('validation.attributes.phone'),
+            'email'        => __('validation.attributes.email'),
+            'password'     => __('validation.attributes.password'),
         ];
     }
 
