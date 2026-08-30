@@ -21,7 +21,7 @@ class RegisterCandidateRequest extends FormRequest
             'password'           => ['required', 'confirmed', Password::min(8)->mixedCase()->symbols()],
             'current_country_id' => ['required', 'integer', 'exists:countries,id'],
             'birth_date'         => ['required', 'date', 'date_format:Y-m-d'],
-            'gender'             => ['required', 'string', 'in:male,female'],
+            'gender_id'          => ['required', 'integer', 'exists:genders,id'],
         ];
     }
 
@@ -34,7 +34,7 @@ class RegisterCandidateRequest extends FormRequest
             'password'           => __('validation.attributes.password'),
             'current_country_id' => __('validation.attributes.current_country_id'),
             'birth_date'         => __('validation.attributes.birth_date'),
-            'gender'             => __('validation.attributes.gender'),
+            'gender_id'          => __('validation.attributes.gender'),
         ];
     }
 
@@ -55,8 +55,8 @@ class RegisterCandidateRequest extends FormRequest
             'current_country_id.exists'   => __('validation.exists', ['attribute' => __('validation.attributes.current_country_id')]),
             'birth_date.required'         => __('validation.required', ['attribute' => __('validation.attributes.birth_date')]),
             'birth_date.date'             => __('validation.date', ['attribute' => __('validation.attributes.birth_date')]),
-            'gender.required'             => __('validation.required', ['attribute' => __('validation.attributes.gender')]),
-            'gender.in'                   => __('validation.in', ['attribute' => __('validation.attributes.gender')]),
+            'gender_id.required'          => __('validation.required', ['attribute' => __('validation.attributes.gender')]),
+            'gender_id.exists'            => __('validation.exists', ['attribute' => __('validation.attributes.gender')]),
         ];
     }
 }

@@ -50,7 +50,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"أحمد عبد العزيز\",\n    \"email\": \"candidate@example.com\",\n    \"phone\": \"0501234567\",\n    \"password\": \"Password123#\",\n    \"password_confirmation\": \"Password123#\",\n    \"current_country_id\": 1,\n    \"birth_date\": \"1996-05-15\",\n    \"gender\": \"male\"\n}"
+              "raw": "{\n    \"name\": \"أحمد عبد العزيز\",\n    \"email\": \"candidate@example.com\",\n    \"phone\": \"0501234567\",\n    \"password\": \"Password123#\",\n    \"password_confirmation\": \"Password123#\",\n    \"current_country_id\": 1,\n    \"birth_date\": \"1996-05-15\",\n    \"gender_id\": 1\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/register/candidate",

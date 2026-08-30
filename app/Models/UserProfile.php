@@ -14,6 +14,7 @@ class UserProfile extends Model
         'user_id',
         'birth_date',
         'gender',
+        'gender_id',
         'current_country_id',
         'qualification',
         'experience_years',
@@ -36,6 +37,11 @@ class UserProfile extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo(Gender::class);
     }
 
     public function currentCountry(): BelongsTo

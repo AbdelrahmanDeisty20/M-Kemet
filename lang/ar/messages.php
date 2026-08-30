@@ -6,6 +6,7 @@ return [
     'errorOccurred'       => 'حدث خطأ ما، يرجى المحاولة لاحقاً',
     'notFound'            => 'العنصر المطلوب غير موجود',
     'validationError'     => 'البيانات المدخلة غير صالحة',
+    'gendersFetchedSuccessfully' => 'تم جلب الأنواع بنجاح',
 
     // Authentication Messages
     'accountCreatedSuccessfully'     => 'تم إنشاء الحساب بنجاح، يُرجى إدخال رمز التحقق (OTP) المكون من 6 أرقام المرسل إلى بريدك الإلكتروني',

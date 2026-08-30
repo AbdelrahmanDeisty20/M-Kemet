@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Company;
+use App\Models\Gender;
 use App\Models\UserProfile;
 use Illuminate\Support\Facades\DB;
 
@@ -73,21 +74,34 @@ class AuthService
     {
         return DB::transaction(function () use ($data) {
             $user = User::create([
-                'name'      => $data['name'],
-                'email'     => $data['email'],
-                'phone'     => $data['phone'],
-                'password'  => Hash::make($data['password']),
-                'user_type' => 'candidate',
-                'status'    => 'pending',
+                'name'       => $data['name'],
+                'email'      => $data['email'],
+                'phone'      => $data['phone'],
+                'country_id' => $data['current_country_id'],
+                'password'   => Hash::make($data['password']),
+                'user_type'  => 'candidate',
+                'status'     => 'pending',
             ]);
+
+            $gender = Gender::find($data['gender_id']);
 
             // إنشاء ملف الباحث عن عمل
             $profile = UserProfile::create([
                 'user_id'            => $user->id,
                 'current_country_id' => $data['current_country_id'],
                 'birth_date'         => $data['birth_date'],
-                'gender'             => $data['gender'],
+                'gender_id'          => $data['gender_id'],
+                'gender'             => $gender?->code ?? 'male',
                 'status'             => 'pending',
+            ]);
+
+            // ربط المستخدم بالدولة في الجدول الوسيط user_countries
+            DB::table('user_countries')->insert([
+                'user_id'    => $user->id,
+                'country_id' => $data['current_country_id'],
+                'type'       => 'current',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             $code = (string) random_int(100000, 999999);
@@ -103,10 +117,10 @@ class AuthService
 
             Mail::to($user->email)->queue(new OtpMail($code, $user->name));
 
-            $profile->load('currentCountry');
+            $user->load(['country', 'candidateProfile.currentCountry', 'candidateProfile.genderRelation', 'countries']);
 
             return $this->successResponse([
-                'user'    => new UserResource($user),
+                'user' => new UserResource($user),
             ], __('messages.accountCreatedSuccessfully'), 201);
         });
     }

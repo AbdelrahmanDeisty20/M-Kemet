@@ -19,6 +19,7 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'country_id',
         'user_type',
         'status',
         'otp_code',
@@ -40,6 +41,10 @@ class User extends Authenticatable
     }
 
     // العلاقات Relationships
+    public function country(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
     public function profile(): HasOne
     {
         return $this->hasOne(UserProfile::class);
@@ -58,6 +63,11 @@ class User extends Authenticatable
     public function companyProfile(): HasOne
     {
         return $this->hasOne(Company::class);
+    }
+
+    public function countries(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Country::class, 'user_countries')->withPivot('type')->withTimestamps();
     }
 
     public function documents(): HasMany

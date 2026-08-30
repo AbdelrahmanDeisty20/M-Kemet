@@ -12,7 +12,7 @@ class CandidatePersonalInfoResource extends JsonResource
         return [
             'birth_date'      => $this->birth_date?->format('Y-m-d'),
             'age'             => $this->age,
-            'gender'          => $this->gender,
+            'gender'          => new GenderResource($this->whenLoaded('genderRelation')),
             'current_country' => new CountryResource($this->whenLoaded('currentCountry')),
         ];
     }
