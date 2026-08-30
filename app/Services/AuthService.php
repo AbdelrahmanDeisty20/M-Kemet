@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\UserResource;
+use App\Http\Resources\CandidateRegistrationResource;
 use App\Http\Resources\CandidateProfileResource;
 use App\Http\Resources\CompanyProfileResource;
 use App\Mail\OtpMail;
@@ -120,7 +121,7 @@ class AuthService
             $user->load(['country', 'candidateProfile.currentCountry', 'candidateProfile.genderRelation', 'countries']);
 
             return $this->successResponse([
-                'user' => new UserResource($user),
+                'user' => new CandidateRegistrationResource($user->load('candidateProfile.personalInfo', 'candidateProfile.careerInfo')),
             ], __('messages.accountCreatedSuccessfully'), 201);
         });
     }
