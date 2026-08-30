@@ -41,7 +41,12 @@ class UserProfile extends Model
 
     public function gender(): BelongsTo
     {
-        return $this->belongsTo(Gender::class);
+        return $this->belongsTo(Gender::class, 'gender_id');
+    }
+
+    public function genderRelation(): BelongsTo
+    {
+        return $this->belongsTo(Gender::class, 'gender_id');
     }
 
 

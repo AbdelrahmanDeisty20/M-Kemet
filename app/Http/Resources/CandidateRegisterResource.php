@@ -14,7 +14,7 @@ class CandidateRegisterResource extends JsonResource
             'phone'           => $this->phone,
             'email'           => $this->email,
             'current_country' => new CountryResource($this->whenLoaded('country')),
-            'gender'          => new GenderResource($this->candidateProfile?->gender),
+            'gender'          => new GenderResource($this->candidateProfile?->genderRelation),
         ];
     }
 }
