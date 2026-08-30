@@ -119,7 +119,7 @@ class AuthService
 
             Mail::to($user->email)->queue(new OtpMail($code, $user->name));
             return $this->successResponse([
-                'user' => new CandidateRegisterResource($user->load('candidateProfile','country','candidateProfile.gender')),  
+                'user' => new CandidateRegisterResource($user->load('country', 'candidateProfile.gender')),  
             ], __('messages.accountCreatedSuccessfully'), 201);
         });
     }
