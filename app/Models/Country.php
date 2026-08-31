@@ -25,6 +25,18 @@ class Country extends Model
     }
 
     /**
+     * Get Emoji flag based on ISO 2-letter country code
+     */
+    public function getFlagAttribute(): string
+    {
+        if (empty($this->code) || strlen($this->code) !== 2) {
+            return '';
+        }
+        $code = strtoupper($this->code);
+        return mb_chr(127397 + ord($code[0]), 'UTF-8') . mb_chr(127397 + ord($code[1]), 'UTF-8');
+    }
+
+    /**
      * Dynamic localization accessor for name attribute based on app locale
      */
     public function getNameAttribute(): ?string
