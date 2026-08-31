@@ -14,9 +14,9 @@ class OtpMail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public string $code;
-    public string $userName;
+    public ?string $userName;
 
-    public function __construct(string $code, string $userName)
+    public function __construct(string $code, ?string $userName = null)
     {
         $this->code     = $code;
         $this->userName = $userName;
@@ -33,7 +33,9 @@ class OtpMail extends Mailable implements ShouldQueue
     {
         $dir = app()->getLocale() === 'ar' ? 'rtl' : 'ltr';
         $align = app()->getLocale() === 'ar' ? 'right' : 'left';
-        $welcome = __('messages.otp_mail_welcome', ['name' => $this->userName]);
+        $welcome = !empty($this->userName) 
+            ? __('messages.otp_mail_welcome', ['name' => $this->userName]) 
+            : __('messages.otp_mail_welcome_generic');
         $intro = __('messages.otp_mail_intro');
         $expiry = __('messages.otp_mail_expiry');
         $ignore = __('messages.otp_mail_ignore');

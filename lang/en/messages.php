@@ -31,8 +31,9 @@ return [
     'invalid_token'                  => 'Invalid or expired Refresh Token',
 
     // Mail Strings
-    'otp_mail_subject' => 'Your Verification Code - M-Kemet Platform',
-    'otp_mail_welcome' => 'Hello :name,',
+    'otp_mail_subject'         => 'Your Verification Code - M-Kemet Platform',
+    'otp_mail_welcome'         => 'Hello :name,',
+    'otp_mail_welcome_generic' => 'Welcome,',
     'otp_mail_intro'   => 'Thank you for registering on M-Kemet platform. Your verification code (OTP) is:',
     'otp_mail_expiry'  => 'This code is valid for 5 minutes only.',
     'otp_mail_ignore'  => 'If you did not request this code, please ignore this email.',

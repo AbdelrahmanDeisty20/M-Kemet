@@ -39,7 +39,7 @@ class PasswordResetService
             'expires_at' => now()->addMinutes(5),
         ]);
 
-        Mail::to($user->email)->queue(new OtpMail($code, $user->name));
+        Mail::to($user->email)->queue(new OtpMail($code, $user->display_name));
 
         return $this->successResponse(null, __('messages.resetOtpSentSuccessfully'));
     }

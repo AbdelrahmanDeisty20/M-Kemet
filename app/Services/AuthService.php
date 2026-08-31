@@ -60,7 +60,7 @@ class AuthService
             ]);
 
             // إرسال الإيميل عبر الـ Queue
-            Mail::to($user->email)->queue(new OtpMail($code, $user->name));
+            Mail::to($user->email)->queue(new OtpMail($code, $user->display_name ?? $company->company_name));
 
             return $this->successResponse([
                 'user'    => new CompanyRegisterResource($user->load('company')),
@@ -116,7 +116,7 @@ class AuthService
                 'expires_at' => now()->addMinutes(5),
             ]);
 
-            Mail::to($user->email)->queue(new OtpMail($code, $user->name));
+            Mail::to($user->email)->queue(new OtpMail($code, $user->display_name));
             return $this->successResponse([
                 'user' => new CandidateRegisterResource($user->load('country', 'candidateProfile.genderRelation')),  
             ], __('messages.accountCreatedSuccessfully'), 201);
@@ -207,7 +207,7 @@ class AuthService
             'expires_at' => now()->addMinutes(5),
         ]);
 
-        Mail::to($user->email)->queue(new OtpMail($code, $user->name));
+        Mail::to($user->email)->queue(new OtpMail($code, $user->display_name));
 
         return $this->successResponse(null, __('messages.otpResentSuccessfully'));
     }

@@ -91,6 +91,11 @@ class User extends Authenticatable
     }
 
     // Accessors & Helper Methods
+    public function getDisplayNameAttribute(): ?string
+    {
+        return $this->name ?? $this->company?->company_name;
+    }
+
     public function getIsCandidateAttribute(): bool
     {
         return $this->user_type === 'candidate';

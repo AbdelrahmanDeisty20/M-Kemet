@@ -31,8 +31,9 @@ return [
     'invalid_token'                  => 'الـ Refresh Token غير صالح أو منتهي الصلاحية',
 
     // Mail Strings
-    'otp_mail_subject' => 'رمز التحقق الخاص بك - منصة أم كميت (M-Kemet)',
-    'otp_mail_welcome' => 'مرحباً :name،',
+    'otp_mail_subject'         => 'رمز التحقق الخاص بك - منصة أم كميت (M-Kemet)',
+    'otp_mail_welcome'         => 'مرحباً :name،',
+    'otp_mail_welcome_generic' => 'مرحباً بك،',
     'otp_mail_intro'   => 'شكراً لتسجيلك في منصة أم كميت (M-Kemet). رمز التحقق (OTP) الخاص بك هو:',
     'otp_mail_expiry'  => 'هذا الرمز صالح لمدة 5 دقائق فقط.',
     'otp_mail_ignore'  => 'إذا لم تكن قد طلبت هذا الرمز، يُرجى تجاهل هذه الرسالة.',
