@@ -35,7 +35,6 @@ class AuthService
     {
         return DB::transaction(function () use ($data) {
             $user = User::create([
-                'name'      => $data['name'],
                 'email'     => $data['email'],
                 'phone'     => $data['phone'],
                 'password'  => Hash::make($data['password']),
