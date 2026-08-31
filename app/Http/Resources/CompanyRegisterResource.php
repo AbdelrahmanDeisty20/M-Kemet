@@ -19,7 +19,7 @@ class CompanyRegisterResource extends JsonResource
             'status'       => $this->status,
             'phone'        => $this->phone,
             'email'        => $this->email,
-            
+            'user_type'    => $this->user_type,
         ];
     }
 }
