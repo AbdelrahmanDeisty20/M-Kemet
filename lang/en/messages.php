@@ -6,7 +6,8 @@ return [
     'errorOccurred'       => 'An error occurred, please try again later',
     'notFound'            => 'Requested item not found',
     'validationError'     => 'The given data was invalid',
-    'gendersFetchedSuccessfully' => 'Genders retrieved successfully',
+    'gendersFetchedSuccessfully'   => 'Genders retrieved successfully',
+    'countriesFetchedSuccessfully' => 'Countries retrieved successfully',
 
     // Authentication Messages
     'accountCreatedSuccessfully'     => 'Account created successfully. Please enter the 6-digit OTP sent to your email.',

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Auth\PasswordResetController;
+use App\Http\Controllers\API\CountryController;
 use App\Http\Controllers\API\GenderController;
 use App\Http\Middleware\SetLocale;
 
@@ -11,6 +12,7 @@ Route::middleware([SetLocale::class])->group(function () {
     
     // المسارات العامة (Public Routes)
     Route::get('/genders', [GenderController::class, 'index']);
+    Route::get('/countries', [CountryController::class, 'index']);
     Route::post('/register/company', [AuthController::class, 'register']);
     Route::post('/register/candidate', [AuthController::class, 'registerCandidate']);
     Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
