@@ -38,6 +38,7 @@ class CountrySeeder extends Seeder
         ];
 
         foreach ($countries as $country) {
+            $country['flag_icon_path'] = 'flags/' . strtolower($country['code']) . '.png';
             Country::updateOrCreate(
                 ['code' => $country['code']],
                 $country
