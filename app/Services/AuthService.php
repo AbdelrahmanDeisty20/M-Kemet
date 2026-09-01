@@ -291,15 +291,8 @@ class AuthService
     {
         $user = Auth::user();
 
-        $profile = match($user->user_type) {
-            'candidate' => $user->candidateProfile ? new CandidateProfileResource($user->candidateProfile) : null,
-            'company'   => $user->companyProfile ? new CompanyProfileResource($user->companyProfile) : null,
-            default     => null,
-        };
-
         return $this->successResponse([
             'user'    => new UserResource($user),
-            'profile' => $profile,
         ], __('messages.profileSuccessFully'));
     }
 
