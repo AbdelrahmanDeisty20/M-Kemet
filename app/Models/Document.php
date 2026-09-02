@@ -21,13 +21,10 @@ class Document extends Model
 
     public function getSecureUrlAttribute(): string
     {
-        if ($this->document_type === 'personal_photo') {
+        if ($this->document_type === 'personal_photo' && $this->disk === 'public') {
             return Storage::disk('public')->url($this->file_path);
         }
 
-        return Storage::disk($this->disk ?? 'private')->temporaryUrl(
-            $this->file_path,
-            now()->addMinutes(15)
-        );
+        return url("/api/documents/{$this->id}/file");
     }
 }

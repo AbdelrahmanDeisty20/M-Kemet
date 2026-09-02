@@ -1,18 +1,22 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Auth\PasswordResetController;
+use App\Http\Controllers\API\Candidate\CandidateProfileController;
 use App\Http\Controllers\API\CountryController;
+use App\Http\Controllers\API\DocumentController;
+use App\Http\Controllers\API\ExperienceLevelController;
 use App\Http\Controllers\API\GenderController;
+use App\Http\Controllers\API\ProfessionController;
 use App\Http\Middleware\SetLocale;
-
+use Illuminate\Support\Facades\Route;
 
 Route::middleware([SetLocale::class])->group(function () {
-    
     // المسارات العامة (Public Routes)
     Route::get('/genders', [GenderController::class, 'index']);
     Route::get('/countries', [CountryController::class, 'index']);
+    Route::get('/professions', [ProfessionController::class, 'index']);
+    Route::get('/experience-levels', [ExperienceLevelController::class, 'index']);
     Route::post('/register/company', [AuthController::class, 'register']);
     Route::post('/register/candidate', [AuthController::class, 'registerCandidate']);
     Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
@@ -30,5 +34,16 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/profile', [AuthController::class, 'profile']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/logout-all', [AuthController::class, 'logoutAllDevices']);
+
+        // مسارات تكميل ملف الباحث عن عمل (Candidate Profile Completion)
+        // middleware('candidate') يمنع الشركات من الوصول لهذه المسارات
+        Route::prefix('candidate')->middleware('candidate')->group(function () {
+            Route::get('/my-document', [CandidateProfileController::class, 'show']);
+            Route::put('/update-document', [CandidateProfileController::class, 'update']);
+            Route::post('/documents', [CandidateProfileController::class, 'uploadDocument']);
+            Route::post('/video', [CandidateProfileController::class, 'uploadVideo']);
+            Route::get('/documents/{document}/file', [DocumentController::class, 'viewFile'])
+                ->name('documents.file');
+        });
     });
 });
