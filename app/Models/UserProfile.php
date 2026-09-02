@@ -16,6 +16,7 @@ class UserProfile extends Model
         'birth_date',
         'gender_id',
         'current_country_id',
+        'qualification_id',
         'qualification',
         'sub_specialization',
         'profession_id',
@@ -60,6 +61,11 @@ class UserProfile extends Model
         return $this->belongsTo(Country::class, 'current_country_id');
     }
 
+    public function qualification(): BelongsTo
+    {
+        return $this->belongsTo(Qualification::class, 'qualification_id');
+    }
+
     public function experienceLevel(): BelongsTo
     {
         return $this->belongsTo(ExperienceLevel::class, 'experience_level_id');
@@ -96,7 +102,7 @@ class UserProfile extends Model
         $totalSteps = 10;
         $completedSteps = 0;
 
-        if (!empty($this->qualification)) $completedSteps++;
+        if (!empty($this->qualification_id) || !empty($this->qualification)) $completedSteps++;
         if (!empty($this->sub_specialization)) $completedSteps++;
         if ($this->experience_years > 0 || !empty($this->experience_level_id)) $completedSteps++;
         if (!empty($this->summary)) $completedSteps++;

@@ -333,7 +333,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"أحمد عبد العزيز\",\n    \"birth_date\": \"1996-05-15\",\n    \"gender_id\": 1,\n    \"current_country_id\": 1,\n    \"qualification\": \"بكالوريوس حاسبات ومعلومات\",\n    \"sub_specialization\": \"هندسة البرمجيات\",\n    \"experience_years\": 3,\n    \"experience_level_id\": 2,\n    \"expected_salary\": 8000,\n    \"willing_to_travel\": true,\n    \"languages\": [\"العربية\", \"الإنجليزية\"],\n    \"skills\": [\"Laravel\", \"Vue.js\", \"MySQL\", \"Docker\"],\n    \"summary\": \"مطور ويب متكامل بخبرة 3 سنوات في بناء تطبيقات الويب باستخدام Laravel و Vue.js\",\n    \"profession_id\": 1,\n    \"target_country_ids\": [1, 2, 3]\n}",
+              "raw": "{\n    \"name\": \"أحمد عبد العزيز\",\n    \"birth_date\": \"1996-05-15\",\n    \"gender_id\": 1,\n    \"current_country_id\": 1,\n    \"qualification_id\": 3,\n    \"qualification\": \"بكالوريوس حاسبات ومعلومات\",\n    \"sub_specialization\": \"هندسة البرمجيات\",\n    \"experience_years\": 3,\n    \"experience_level_id\": 2,\n    \"expected_salary\": 8000,\n    \"willing_to_travel\": true,\n    \"languages\": [\"العربية\", \"الإنجليزية\"],\n    \"skills\": [\"Laravel\", \"Vue.js\", \"MySQL\", \"Docker\"],\n    \"summary\": \"مطور ويب متكامل بخبرة 3 سنوات في بناء تطبيقات الويب باستخدام Laravel و Vue.js\",\n    \"profession_id\": 1,\n    \"target_country_ids\": [1, 2, 3]\n}",
               "options": { "raw": { "language": "json" } }
             },
             "url": {
@@ -341,7 +341,7 @@
               "host": ["{{base_url}}"],
               "path": ["api", "candidate", "update-document"]
             },
-            "description": "تحديث الملف الشخصي - كل الحقول اختيارية (nullable) ما عدا ما هو مطلوب صراحةً\n\nالحقول:\n- name: الاسم الكامل\n- birth_date: تاريخ الميلاد (YYYY-MM-DD)\n- gender_id: معرّف الجنس (من GET /api/genders)\n- current_country_id: معرّف الدولة الحالية (من GET /api/countries)\n- qualification: المؤهل الدراسي\n- sub_specialization: التخصص الفرعي\n- experience_years: سنوات الخبرة (0-50)\n- experience_level_id: معرّف مستوى الخبرة (من GET /api/experience-levels)\n- expected_salary: الراتب المتوقع (رقم موجب)\n- willing_to_travel: الاستعداد للسفر (true/false)\n- languages: مصفوفة اللغات [\"العربية\", \"الإنجليزية\"]\n- skills: مصفوفة المهارات [\"Laravel\", \"PHP\"]\n- summary: نبذة شخصية (max 2000 حرف)\n- profession_id: معرّف المهنة (من GET /api/professions)\n- target_country_ids: مصفوفة معرّفات الدول المستهدفة للعمل"
+            "description": "تحديث الملف الشخصي - كل الحقول اختيارية (nullable) ما عدا ما هو مطلوب صراحةً\n\nالحقول:\n- name: الاسم الكامل\n- birth_date: تاريخ الميلاد (YYYY-MM-DD)\n- gender_id: معرّف الجنس (من GET /api/genders)\n- current_country_id: معرّف الدولة الحالية (من GET /api/countries)\n- qualification_id: معرّف المؤهل الدراسي (من GET /api/qualifications)\n- qualification: تفاصيل المؤهل أو التخصص في حالة الحاجة لنص إضافي\n- sub_specialization: التخصص الفرعي\n- experience_years: سنوات الخبرة (0-50)\n- experience_level_id: معرّف مستوى الخبرة (من GET /api/experience-levels)\n- expected_salary: الراتب المتوقع (رقم موجب)\n- willing_to_travel: الاستعداد للسفر (true/false)\n- languages: مصفوفة اللغات [\"العربية\", \"الإنجليزية\"]\n- skills: مصفوفة المهارات [\"Laravel\", \"PHP\"]\n- summary: نبذة شخصية (max 2000 حرف)\n- profession_id: معرّف المهنة (من GET /api/professions)\n- target_country_ids: مصفوفة معرّفات الدول المستهدفة للعمل"
           },
           "response": []
         },
@@ -604,6 +604,23 @@
               "path": ["api", "experience-levels"]
             },
             "description": "جلب مستويات الخبرة:\n- أقل من سنة\n- من سنة إلى 5 سنوات\n- من 5 إلى 8 سنوات\n- أكثر من 8 سنوات"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Qualifications (المؤهلات الدراسية)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/qualifications",
+              "host": ["{{base_url}}"],
+              "path": ["api", "qualifications"]
+            },
+            "description": "جلب قائمة المؤهلات الدراسية المعتمده (ثانوية، دبلوم، بكالوريوس، ماجستير، دكتوراه، شهادة مهنية)"
           },
           "response": []
         }

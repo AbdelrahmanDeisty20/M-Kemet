@@ -13,6 +13,7 @@ return [
     'countriesFetchedSuccessfully'        => 'تم جلب الدول بنجاح',
     'professionsFetchedSuccessfully'      => 'تم جلب المهن بنجاح',
     'experienceLevelsFetchedSuccessfully' => 'تم جلب مستويات الخبرة بنجاح',
+    'qualificationsFetchedSuccessfully'   => 'تم جلب المؤهلات الدراسية بنجاح',
 
     // Authentication Messages
     'accountCreatedSuccessfully'     => 'تم إنشاء الحساب بنجاح، يُرجى إدخال رمز التحقق (OTP) المكون من 6 أرقام المرسل إلى بريدك الإلكتروني',

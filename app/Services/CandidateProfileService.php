@@ -25,6 +25,7 @@ class CandidateProfileService
         $user->load([
             'candidateProfile.genderRelation',
             'candidateProfile.currentCountry',
+            'candidateProfile.qualification',
             'candidateProfile.experienceLevel',
             'candidateProfile.profession',
             'candidateProfile.targetCountries',

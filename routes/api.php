@@ -8,6 +8,7 @@ use App\Http\Controllers\API\DocumentController;
 use App\Http\Controllers\API\ExperienceLevelController;
 use App\Http\Controllers\API\GenderController;
 use App\Http\Controllers\API\ProfessionController;
+use App\Http\Controllers\API\QualificationController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,7 @@ Route::middleware([SetLocale::class])->group(function () {
     Route::get('/countries', [CountryController::class, 'index']);
     Route::get('/professions', [ProfessionController::class, 'index']);
     Route::get('/experience-levels', [ExperienceLevelController::class, 'index']);
+    Route::get('/qualifications', [QualificationController::class, 'index']);
     Route::post('/register/company', [AuthController::class, 'register']);
     Route::post('/register/candidate', [AuthController::class, 'registerCandidate']);
     Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);

@@ -13,6 +13,7 @@ return [
     'countriesFetchedSuccessfully'        => 'Countries retrieved successfully',
     'professionsFetchedSuccessfully'      => 'Professions retrieved successfully',
     'experienceLevelsFetchedSuccessfully' => 'Experience levels retrieved successfully',
+    'qualificationsFetchedSuccessfully'   => 'Qualifications retrieved successfully',
 
     // Authentication Messages
     'accountCreatedSuccessfully'     => 'Account created successfully. Please enter the 6-digit OTP sent to your email.',

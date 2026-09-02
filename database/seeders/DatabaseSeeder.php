@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             GenderSeeder::class,
             ProfessionSeeder::class,
             ExperienceLevelSeeder::class,
+            QualificationSeeder::class,
             CandidateSeeder::class,
         ]);
     }
