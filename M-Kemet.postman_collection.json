@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "8a3f912c-4b5c-4d8e-9f12-3a4b5c6d7e8f",
     "name": "M-Kemet",
-    "description": "Postman Collection for M-Kemet Employment Agency Platform (أم كميت) with full localization support (Arabic & English) and complete field schemas.",
+    "description": "Postman Collection for M-Kemet Employment Agency Platform (أم كميت) - كل الـ endpoints مع كل الحقول.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -14,96 +14,63 @@
     {
       "key": "auth_token",
       "value": "",
-      "type": "string"
+      "type": "string",
+      "description": "يُملأ تلقائياً بعد تسجيل الدخول أو التفعيل"
     },
     {
       "key": "refresh_token",
       "value": "",
-      "type": "string"
+      "type": "string",
+      "description": "يُملأ تلقائياً بعد تسجيل الدخول"
     }
   ],
   "item": [
     {
-      "name": "Authentication & Registration",
+      "name": "🔐 Authentication & Registration",
       "item": [
         {
-          "name": "Register Candidate (الباحث عن عمل)",
+          "name": "Register Candidate (تسجيل باحث عن عمل)",
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "description": "ar or en",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "description": "ar أو en", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"أحمد عبد العزيز\",\n    \"email\": \"candidate@example.com\",\n    \"phone\": \"0501234567\",\n    \"password\": \"Password123#\",\n    \"password_confirmation\": \"Password123#\",\n    \"current_country_id\": 1,\n    \"birth_date\": \"1996-05-15\",\n    \"gender_id\": 1\n}"
+              "raw": "{\n    \"name\": \"أحمد عبد العزيز\",\n    \"email\": \"candidate@example.com\",\n    \"phone\": \"0501234567\",\n    \"password\": \"Password123#\",\n    \"password_confirmation\": \"Password123#\",\n    \"current_country_id\": 1,\n    \"birth_date\": \"1996-05-15\",\n    \"gender_id\": 1\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": {
               "raw": "{{base_url}}/api/register/candidate",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "register",
-                "candidate"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "register", "candidate"]
             },
-            "description": "تسجيل حساب باحث عن عمل جديد بكل الحقول"
+            "description": "تسجيل حساب باحث عن عمل جديد"
           },
           "response": []
         },
         {
-          "name": "Register Company (صاحب شركة)",
+          "name": "Register Company (تسجيل شركة)",
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"شركة أم كميت للحلول البرمجية\",\n    \"phone\": \"0507654321\",\n    \"email\": \"company@example.com\",\n    \"password\": \"Password123#\",\n    \"password_confirmation\": \"Password123#\"\n}"
+              "raw": "{\n    \"name\": \"شركة أم كميت للحلول البرمجية\",\n    \"phone\": \"0507654321\",\n    \"email\": \"company@example.com\",\n    \"password\": \"Password123#\",\n    \"password_confirmation\": \"Password123#\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": {
               "raw": "{{base_url}}/api/register/company",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "register",
-                "company"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "register", "company"]
             },
-            "description": "تسجيل حساب صاحب شركة جديد بكل حقول الشركة"
+            "description": "تسجيل حساب شركة جديدة"
           },
           "response": []
         },
@@ -112,37 +79,21 @@
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"candidate@example.com\",\n    \"code\": \"123456\"\n}"
+              "raw": "{\n    \"email\": \"candidate@example.com\",\n    \"code\": \"123456\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": {
               "raw": "{{base_url}}/api/verify-otp",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "verify-otp"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "verify-otp"]
             },
-            "description": "تفعيل الحساب بواسطة رمز الـ OTP المكون من 6 أرقام"
+            "description": "تفعيل الحساب برمز OTP المكون من 6 أرقام"
           },
           "response": []
         },
@@ -151,37 +102,21 @@
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"candidate@example.com\"\n}"
+              "raw": "{\n    \"email\": \"candidate@example.com\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": {
               "raw": "{{base_url}}/api/resend-otp",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "resend-otp"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "resend-otp"]
             },
-            "description": "إعادة إرسال رمز التحقق مجدداً إلى البريد"
+            "description": "إعادة إرسال رمز التحقق إلى البريد الإلكتروني"
           },
           "response": []
         },
@@ -190,37 +125,21 @@
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"candidate@example.com\",\n    \"password\": \"Password123#\"\n}"
+              "raw": "{\n    \"email\": \"candidate@example.com\",\n    \"password\": \"Password123#\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": {
               "raw": "{{base_url}}/api/login",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "login"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "login"]
             },
-            "description": "تسجيل الدخول وتوليد التوكنات"
+            "description": "تسجيل الدخول والحصول على access_token و refresh_token"
           },
           "response": []
         },
@@ -229,155 +148,92 @@
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}"
+              "raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": {
               "raw": "{{base_url}}/api/refresh-token",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "refresh-token"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "refresh-token"]
             },
-            "description": "تجديد التوكن المنتهي الصلاحية"
+            "description": "تجديد الـ access token باستخدام الـ refresh token"
           },
           "response": []
         }
       ]
     },
     {
-      "name": "Password Reset (استعادة كلمة المرور)",
+      "name": "🔑 Password Reset (استعادة كلمة المرور)",
       "item": [
         {
-          "name": "Forgot Password",
+          "name": "Forgot Password (نسيت كلمة المرور)",
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"candidate@example.com\"\n}"
+              "raw": "{\n    \"email\": \"candidate@example.com\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": {
               "raw": "{{base_url}}/api/forgot-password",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "forgot-password"
-              ]
-            }
+              "host": ["{{base_url}}"],
+              "path": ["api", "forgot-password"]
+            },
+            "description": "إرسال رمز OTP لإعادة تعيين كلمة المرور"
           },
           "response": []
         },
         {
-          "name": "Verify Reset OTP",
+          "name": "Verify Reset OTP (التحقق من رمز الاستعادة)",
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"candidate@example.com\",\n    \"code\": \"123456\"\n}"
+              "raw": "{\n    \"email\": \"candidate@example.com\",\n    \"code\": \"123456\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": {
               "raw": "{{base_url}}/api/verify-reset-otp",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "verify-reset-otp"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "verify-reset-otp"]
             }
           },
           "response": []
         },
         {
-          "name": "Reset Password",
+          "name": "Reset Password (تعيين كلمة المرور الجديدة)",
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"candidate@example.com\",\n    \"code\": \"123456\",\n    \"password\": \"NewPassword123#\",\n    \"password_confirmation\": \"NewPassword123#\"\n}"
+              "raw": "{\n    \"email\": \"candidate@example.com\",\n    \"code\": \"123456\",\n    \"password\": \"NewPassword123#\",\n    \"password_confirmation\": \"NewPassword123#\"\n}",
+              "options": { "raw": { "language": "json" } }
             },
             "url": {
               "raw": "{{base_url}}/api/reset-password",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "reset-password"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "reset-password"]
             }
           },
           "response": []
@@ -385,73 +241,41 @@
       ]
     },
     {
-      "name": "User Profile & Sessions (محمية بـ Sanctum)",
+      "name": "👤 User Profile & Sessions (محمية بـ Sanctum)",
       "item": [
         {
-          "name": "Get Profile (جلب البروفايل)",
+          "name": "Get My Profile (جلب بيانات المستخدم)",
           "request": {
             "method": "GET",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
             ],
             "url": {
               "raw": "{{base_url}}/api/profile",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "profile"
-              ]
-            }
+              "host": ["{{base_url}}"],
+              "path": ["api", "profile"]
+            },
+            "description": "جلب بيانات المستخدم الأساسية (للكل - candidate و company)"
           },
           "response": []
         },
         {
-          "name": "Logout (تسجيل خروج)",
+          "name": "Logout (تسجيل الخروج)",
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
             ],
             "url": {
               "raw": "{{base_url}}/api/logout",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "logout"
-              ]
-            }
+              "host": ["{{base_url}}"],
+              "path": ["api", "logout"]
+            },
+            "description": "تسجيل الخروج من الجهاز الحالي فقط"
           },
           "response": []
         },
@@ -460,32 +284,326 @@
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "ar",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{auth_token}}",
-                "type": "text"
-              }
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
             ],
             "url": {
               "raw": "{{base_url}}/api/logout-all",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "logout-all"
+              "host": ["{{base_url}}"],
+              "path": ["api", "logout-all"]
+            },
+            "description": "تسجيل الخروج من جميع الأجهزة"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🧑‍💼 Candidate Profile (ملف الباحث عن عمل)",
+      "description": "كل المسارات هنا محمية بـ auth:sanctum + middleware candidate (للباحثين فقط)",
+      "item": [
+        {
+          "name": "Get Candidate Profile (جلب الملف الشخصي)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "description": "ar أو en", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/candidate/my-document",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidate", "my-document"]
+            },
+            "description": "جلب الملف الشخصي الكامل للباحث عن عمل مع كل البيانات والمستندات"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Candidate Profile (تحديث الملف الشخصي)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"أحمد عبد العزيز\",\n    \"birth_date\": \"1996-05-15\",\n    \"gender_id\": 1,\n    \"current_country_id\": 1,\n    \"qualification\": \"بكالوريوس حاسبات ومعلومات\",\n    \"sub_specialization\": \"هندسة البرمجيات\",\n    \"experience_years\": 3,\n    \"experience_level_id\": 2,\n    \"expected_salary\": 8000,\n    \"willing_to_travel\": true,\n    \"languages\": [\"العربية\", \"الإنجليزية\"],\n    \"skills\": [\"Laravel\", \"Vue.js\", \"MySQL\", \"Docker\"],\n    \"summary\": \"مطور ويب متكامل بخبرة 3 سنوات في بناء تطبيقات الويب باستخدام Laravel و Vue.js\",\n    \"profession_id\": 1,\n    \"target_country_ids\": [1, 2, 3]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/candidate/update-document",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidate", "update-document"]
+            },
+            "description": "تحديث الملف الشخصي - كل الحقول اختيارية (nullable) ما عدا ما هو مطلوب صراحةً\n\nالحقول:\n- name: الاسم الكامل\n- birth_date: تاريخ الميلاد (YYYY-MM-DD)\n- gender_id: معرّف الجنس (من GET /api/genders)\n- current_country_id: معرّف الدولة الحالية (من GET /api/countries)\n- qualification: المؤهل الدراسي\n- sub_specialization: التخصص الفرعي\n- experience_years: سنوات الخبرة (0-50)\n- experience_level_id: معرّف مستوى الخبرة (من GET /api/experience-levels)\n- expected_salary: الراتب المتوقع (رقم موجب)\n- willing_to_travel: الاستعداد للسفر (true/false)\n- languages: مصفوفة اللغات [\"العربية\", \"الإنجليزية\"]\n- skills: مصفوفة المهارات [\"Laravel\", \"PHP\"]\n- summary: نبذة شخصية (max 2000 حرف)\n- profession_id: معرّف المهنة (من GET /api/professions)\n- target_country_ids: مصفوفة معرّفات الدول المستهدفة للعمل"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Document (رفع مستند)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "document_type",
+                  "value": "cv",
+                  "description": "نوع المستند: personal_photo | national_id | passport | cv",
+                  "type": "text"
+                },
+                {
+                  "key": "file",
+                  "description": "الملف - PDF أو صورة (jpeg, jpg, png) - الحد الأقصى 10MB",
+                  "type": "file",
+                  "src": []
+                }
               ]
-            }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/candidate/documents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidate", "documents"]
+            },
+            "description": "رفع مستند شخصي\n\nأنواع المستندات المقبولة:\n- personal_photo → صورة شخصية (يُحفظ في public disk)\n- national_id → صورة بطاقة الهوية (يُحفظ في private disk)\n- passport → صورة جواز السفر (يُحفظ في private disk)\n- cv → السيرة الذاتية PDF (يُحفظ في private disk)\n\nالملفات المقبولة: pdf, jpeg, jpg, png\nالحد الأقصى للحجم: 10MB\n\n⚠️ لو المستند من نفس النوع موجود بالفعل، هيتم تحديثه تلقائياً"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Document - CV",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "document_type", "value": "cv", "type": "text" },
+                { "key": "file", "description": "ملف PDF للسيرة الذاتية (max 10MB)", "type": "file", "src": [] }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/candidate/documents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidate", "documents"]
+            },
+            "description": "رفع السيرة الذاتية PDF"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Document - National ID",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "document_type", "value": "national_id", "type": "text" },
+                { "key": "file", "description": "صورة البطاقة الوطنية (jpeg, jpg, png, pdf - max 10MB)", "type": "file", "src": [] }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/candidate/documents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidate", "documents"]
+            },
+            "description": "رفع صورة البطاقة الوطنية"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Document - Passport",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "document_type", "value": "passport", "type": "text" },
+                { "key": "file", "description": "صورة جواز السفر (jpeg, jpg, png, pdf - max 10MB)", "type": "file", "src": [] }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/candidate/documents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidate", "documents"]
+            },
+            "description": "رفع صورة جواز السفر"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Document - Personal Photo",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "document_type", "value": "personal_photo", "type": "text" },
+                { "key": "file", "description": "الصورة الشخصية (jpeg, jpg, png - max 10MB)", "type": "file", "src": [] }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/candidate/documents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidate", "documents"]
+            },
+            "description": "رفع الصورة الشخصية - تُحفظ في public disk وتكون متاحة للعرض مباشرة"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Intro Video (رفع فيديو تعريفي)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "video",
+                  "description": "ملف الفيديو التعريفي (mp4, mov, avi, webm - max 50MB)",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "duration_seconds",
+                  "value": "60",
+                  "description": "مدة الفيديو بالثواني (nullable - max 300 ثانية = 5 دقائق)",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/candidate/video",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidate", "video"]
+            },
+            "description": "رفع الفيديو التعريفي للباحث عن عمل\n\nالصيغ المقبولة: mp4, mov, avi, webm\nالحد الأقصى للحجم: 50MB\nالحد الأقصى للمدة: 300 ثانية (5 دقائق)\n\n⚠️ لو فيه فيديو قديم هيتم استبداله تلقائياً"
+          },
+          "response": []
+        },
+        {
+          "name": "View Document File (عرض/تحميل مستند)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/candidate/documents/1/file",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidate", "documents", "1", "file"]
+            },
+            "description": "عرض أو تحميل مستند خاص بالباحث عن عمل بشكل آمن\n\n- PDF → يُعرض مباشرة في المتصفح\n- صورة → تُعرض مباشرة في المتصفح\n\n⚠️ يُسمح للباحث بعرض مستنداته فقط (403 لو حاول الوصول لمستند شخص آخر)\n\nاستبدل 1 في الـ URL بـ ID المستند الصحيح"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔍 Lookup Data (بيانات مرجعية - Public)",
+      "description": "مسارات عامة لا تحتاج توكن - لجلب القوائم المرجعية",
+      "item": [
+        {
+          "name": "Get Genders (قائمة الأجناس)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/genders",
+              "host": ["{{base_url}}"],
+              "path": ["api", "genders"]
+            },
+            "description": "جلب قائمة الأجناس (ذكر / أنثى)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Countries (قائمة الدول)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/countries",
+              "host": ["{{base_url}}"],
+              "path": ["api", "countries"]
+            },
+            "description": "جلب قائمة الدول مع الأعلام والكودات"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Professions (قائمة المهن)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/professions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "professions"]
+            },
+            "description": "جلب قائمة المهن المتاحة - لاستخدام الـ id في profession_id عند التحديث"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Experience Levels (مستويات الخبرة)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Accept-Language", "value": "ar", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/experience-levels",
+              "host": ["{{base_url}}"],
+              "path": ["api", "experience-levels"]
+            },
+            "description": "جلب مستويات الخبرة:\n- أقل من سنة\n- من سنة إلى 5 سنوات\n- من 5 إلى 8 سنوات\n- أكثر من 8 سنوات"
           },
           "response": []
         }
