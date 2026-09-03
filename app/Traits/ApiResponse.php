@@ -19,6 +19,42 @@ trait ApiResponse
     }
 
     /**
+     * Return a paginated JSON response without manual links/meta.
+     *
+     * @param string $resource
+     * @param mixed $data
+     * @param string|null $message
+     * @param array $extra
+     * @return JsonResponse
+     */
+    public function paginated($resource, $data, ?string $message = null, array $extra = []): JsonResponse
+    {
+        $response = [
+            'status'     => true,
+            'message'    => $message ?? __('messages.operationSuccessful'),
+            'data'       => $resource::collection($data->items()),
+            'pagination' => [
+                'current_page' => $data->currentPage(),
+                'per_page'     => $data->perPage(),
+                'total'        => $data->total(),
+                'last_page'    => $data->lastPage(),
+            ],
+        ];
+
+        if (!empty($extra)) {
+            $response = array_merge($response, $extra);
+        }
+
+        return response()->json($response);
+    }
+
+    public function paginatedResponse($resource, $data, ?string $message = null, array $extra = []): JsonResponse
+    {
+        return $this->paginated($resource, $data, $message, $extra);
+    }
+
+
+    /**
      * إرجاع استجابة خطأ موحدة (Error Response)
      */
     public function errorResponse(?string $message = null, int $code = 400, $errors = null): JsonResponse
