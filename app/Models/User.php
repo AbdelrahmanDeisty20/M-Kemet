@@ -91,6 +91,22 @@ class User extends Authenticatable
         return $this->hasMany(RefreshToken::class);
     }
 
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class, 'user_id');
+    }
+
+    public function bookmarkedCandidates(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'bookmarks', 'user_id', 'candidate_id')->withTimestamps();
+    }
+
+    public function isCandidateBookmarked(int $candidateUserId): bool
+    {
+        return $this->bookmarks()->where('candidate_id', $candidateUserId)->exists();
+    }
+
+
     // Accessors & Helper Methods
     public function getDisplayNameAttribute(): ?string
     {

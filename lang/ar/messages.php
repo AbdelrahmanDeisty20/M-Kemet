@@ -39,7 +39,8 @@ return [
     'resetOtpValid'                  => 'رمز التحقق صحيح، يمكنك الآن إدخال كلمة المرور الجديدة',
     'passwordResetSuccessfully'      => 'تم تغيير كلمة المرور بنجاح، يمكنك الآن تسجيل الدخول',
     'tokenRefreshedSuccessfully'     => 'تم تجديد التوكن بنجاح',
-    'invalid_token'                  => 'الـ Refresh Token غير صالح أو منتهي الصلاحية',
+    'bookmarkAddedSuccessfully'      => 'تم حفظ الباحث عن العمل في المفضلة بنجاح',
+    'bookmarkRemovedSuccessfully'    => 'تم إزالة الباحث عن العمل من المفضلة بنجاح',
 
     // Mail Strings
     'otp_mail_subject'         => 'رمز التحقق الخاص بك - منصة أم كميت (M-Kemet)',

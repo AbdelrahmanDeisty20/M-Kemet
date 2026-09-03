@@ -12,6 +12,8 @@ use App\Http\Controllers\API\QualificationController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\API\JobSeekerController;
+
 Route::middleware([SetLocale::class])->group(function () {
     // المسارات العامة (Public Routes)
     Route::get('/genders', [GenderController::class, 'index']);
@@ -19,6 +21,9 @@ Route::middleware([SetLocale::class])->group(function () {
     Route::get('/professions', [ProfessionController::class, 'index']);
     Route::get('/experience-levels', [ExperienceLevelController::class, 'index']);
     Route::get('/qualifications', [QualificationController::class, 'index']);
+    Route::get('/job-seekers', [JobSeekerController::class, 'index']);
+    Route::get('/job-seekers/{id}', [JobSeekerController::class, 'show']);
+
     Route::post('/register/company', [AuthController::class, 'register']);
     Route::post('/register/candidate', [AuthController::class, 'registerCandidate']);
     Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
@@ -37,6 +42,10 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/logout-all', [AuthController::class, 'logoutAllDevices']);
 
+        // مسارات حفظ الباحثين عن العمل في المفضلة (Bookmarks)
+        Route::get('/bookmarks', [JobSeekerController::class, 'bookmarkedList']);
+        Route::post('/job-seekers/{id}/bookmark', [JobSeekerController::class, 'toggleBookmark']);
+
         // مسارات تكميل ملف الباحث عن عمل (Candidate Profile Completion)
         // middleware('candidate') يمنع الشركات من الوصول لهذه المسارات
         Route::prefix('candidate')->middleware('candidate')->group(function () {
@@ -49,3 +58,4 @@ Route::middleware([SetLocale::class])->group(function () {
         });
     });
 });
+

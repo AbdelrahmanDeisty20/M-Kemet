@@ -39,7 +39,8 @@ return [
     'resetOtpValid'                  => 'OTP code is valid. You can now enter your new password.',
     'passwordResetSuccessfully'      => 'Password reset successfully. You can now log in.',
     'tokenRefreshedSuccessfully'     => 'Token refreshed successfully',
-    'invalid_token'                  => 'Invalid or expired Refresh Token',
+    'bookmarkAddedSuccessfully'      => 'Job seeker added to bookmarks successfully',
+    'bookmarkRemovedSuccessfully'    => 'Job seeker removed from bookmarks successfully',
 
     // Mail Strings
     'otp_mail_subject'         => 'Your Verification Code - M-Kemet Platform',
