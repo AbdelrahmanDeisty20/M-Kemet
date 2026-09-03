@@ -25,21 +25,41 @@ class Video extends Model
 
     public function getVideoUrlAttribute(): string
     {
-        return route('admin.videos.stream', $this->id);
+        if (filter_var($this->video_path, FILTER_VALIDATE_URL)) {
+            return $this->video_path;
+        }
+
+        $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $this->video_path), '/');
+        return asset('storage/' . $cleanPath);
     }
 
     public function getAdminStreamUrlAttribute(): string
     {
-        return route('admin.videos.stream', $this->id);
+        if (\Illuminate\Support\Facades\Route::has('admin.videos.stream')) {
+            return route('admin.videos.stream', $this->id);
+        }
+        return $this->video_url;
     }
 
     public function getAdminDownloadUrlAttribute(): string
     {
-        return route('admin.videos.download', $this->id);
+        if (\Illuminate\Support\Facades\Route::has('admin.videos.download')) {
+            return route('admin.videos.download', $this->id);
+        }
+        return $this->video_url;
     }
 
     public function getThumbnailUrlAttribute(): ?string
     {
-        return $this->thumbnail_path ? Storage::disk('public')->url($this->thumbnail_path) : null;
+        if (!$this->thumbnail_path) {
+            return null;
+        }
+
+        if (filter_var($this->thumbnail_path, FILTER_VALIDATE_URL)) {
+            return $this->thumbnail_path;
+        }
+
+        $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $this->thumbnail_path), '/');
+        return asset('storage/' . $cleanPath);
     }
 }

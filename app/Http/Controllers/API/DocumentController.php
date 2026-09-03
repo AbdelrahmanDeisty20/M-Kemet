@@ -13,12 +13,16 @@ class DocumentController extends Controller
 {
     /**
      * Stream/View document file securely (PDFs, Images)
-     * Only the document owner can access their private documents
      */
     public function viewFile(Request $request, Document $document): BinaryFileResponse
     {
-        // Authorization: المستخدم يشوف مستنداته بس
-        if ($document->user_id !== Auth::id()) {
+        $authUser = Auth::guard('sanctum')->user() ?? $request->user();
+
+        // Allow access if owner, or if document is approved/belongs to an approved candidate
+        $isOwner = $authUser && $document->user_id === $authUser->id;
+        $isApprovedCandidateDoc = $document->is_approved || $document->user?->candidateProfile?->status === 'approved';
+
+        if (!$isOwner && !$isApprovedCandidateDoc) {
             abort(403, __('messages.unauthorized'));
         }
 

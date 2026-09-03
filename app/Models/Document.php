@@ -30,8 +30,10 @@ class Document extends Model
             return $this->file_path;
         }
 
-        if ($this->disk === 'public' || $this->document_type === 'personal_photo') {
-            return Storage::disk('public')->url($this->file_path);
+        $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $this->file_path), '/');
+
+        if ($this->disk === 'public' || $this->document_type === 'personal_photo' || $this->is_image) {
+            return asset('storage/' . $cleanPath);
         }
 
         if (\Illuminate\Support\Facades\Route::has('documents.file')) {
@@ -42,17 +44,23 @@ class Document extends Model
             return route('admin.documents.file', $this->id);
         }
 
-        return Storage::url($this->file_path);
+        return asset('storage/' . $cleanPath);
     }
 
     public function getAdminFileUrlAttribute(): string
     {
-        return route('admin.documents.file', $this->id);
+        if (\Illuminate\Support\Facades\Route::has('admin.documents.file')) {
+            return route('admin.documents.file', $this->id);
+        }
+        return $this->secure_url;
     }
 
     public function getAdminDownloadUrlAttribute(): string
     {
-        return route('admin.documents.download', $this->id);
+        if (\Illuminate\Support\Facades\Route::has('admin.documents.download')) {
+            return route('admin.documents.download', $this->id);
+        }
+        return $this->secure_url;
     }
 
     public function getIsImageAttribute(): bool
