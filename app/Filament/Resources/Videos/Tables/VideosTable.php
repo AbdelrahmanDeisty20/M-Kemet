@@ -23,21 +23,6 @@ class VideosTable
                 TextColumn::make('user.email')
                     ->label('البريد الإلكتروني')
                     ->searchable(),
-                TextColumn::make('video_path')
-                    ->label('رابط الفيديو')
-                    ->url(fn ($record) => $record?->video_url, shouldOpenInNewTab: true)
-                    ->formatStateUsing(fn () => 'مشاهدة الفيديو 🎥')
-                    ->color('primary'),
-                TextColumn::make('duration_seconds')
-                    ->label('مدة الفيديو')
-                    ->numeric()
-                    ->suffix(' ثانية')
-                    ->sortable(),
-                TextColumn::make('file_size_mb')
-                    ->label('حجم الملف')
-                    ->numeric()
-                    ->suffix(' MB')
-                    ->sortable(),
                 TextColumn::make('status')
                     ->label('حالة الاعتماد')
                     ->badge()

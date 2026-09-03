@@ -2,8 +2,13 @@
 
 namespace App\Filament\Resources\Videos\Schemas;
 
-use Filament\Schemas\Components\Section;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class VideoInfolist
@@ -27,23 +32,14 @@ class VideoInfolist
                             ->placeholder('-'),
                     ]),
 
-                Section::make('تفاصيل ومواصفات الفيديو')
+                Section::make('مشاهدة وتشغيل الفيديو التعريفي 🎥')
                     ->icon('heroicon-o-video-camera')
-                    ->columns(3)
+                    ->columnSpanFull()
                     ->schema([
-                        TextEntry::make('video_path')
-                            ->label('مشاهدة الفيديو')
-                            ->url(fn ($record) => $record?->video_url, shouldOpenInNewTab: true)
-                            ->formatStateUsing(fn () => 'فتح ورابط مشاهدة الفيديو 🎥')
-                            ->color('primary'),
-                        TextEntry::make('duration_seconds')
-                            ->label('مدة الفيديو')
-                            ->suffix(' ثانية')
-                            ->placeholder('-'),
-                        TextEntry::make('file_size_mb')
-                            ->label('حجم الفيديو')
-                            ->suffix(' MB')
-                            ->placeholder('-'),
+                        ViewEntry::make('video_player')
+                            ->label('تشغيل الفيديو')
+                            ->view('filament.resources.documents.video-player')
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('حالة واعتماد الفيديو')
@@ -64,7 +60,39 @@ class VideoInfolist
                                 'pending'  => 'قيد المراجعة',
                                 'rejected' => 'مرفوض',
                                 default    => $state,
-                            }),
+                            })
+                            ->suffixAction(
+                                Action::make('changeVideoStatus')
+                                    ->label('تغيير حالة الفيديو')
+                                    ->icon('heroicon-o-pencil-square')
+                                    ->color('warning')
+                                    ->form([
+                                        Select::make('status')
+                                            ->label('الحالة الجديدة للفيديو')
+                                            ->options([
+                                                'approved' => 'معتمد',
+                                                'pending'  => 'قيد المراجعة',
+                                                'rejected' => 'مرفوض',
+                                            ])
+                                            ->default(fn ($record) => $record->status ?? 'pending')
+                                            ->required()
+                                            ->reactive(),
+                                        TextInput::make('rejection_reason')
+                                            ->label('سبب الرفض')
+                                            ->visible(fn ($get) => $get('status') === 'rejected'),
+                                    ])
+                                    ->action(function ($record, array $data) {
+                                        $record->update([
+                                            'status'           => $data['status'],
+                                            'rejection_reason' => $data['status'] === 'rejected' ? ($data['rejection_reason'] ?? 'تم رفض الفيديو') : null,
+                                        ]);
+
+                                        Notification::make()
+                                            ->title('تم تحديث حالة الفيديو التعريفي بنجاح')
+                                            ->success()
+                                            ->send();
+                                    })
+                            ),
                         TextEntry::make('rejection_reason')
                             ->label('سبب الرفض (إن وجد)')
                             ->placeholder('لا يوجد')
