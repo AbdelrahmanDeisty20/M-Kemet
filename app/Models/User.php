@@ -108,6 +108,37 @@ class User extends Authenticatable
 
 
     // Accessors & Helper Methods
+    public function getProfilePhotoUrlAttribute(): ?string
+    {
+        $photoDoc = $this->documents?->where('document_type', 'personal_photo')->first();
+        return $photoDoc?->secure_url;
+    }
+
+    public function getPassportStatusDataAttribute(): array
+    {
+        $passport = $this->documents?->where('document_type', 'passport')->first();
+        if (!$passport) {
+            return [
+                'has_passport' => false,
+                'is_approved'  => false,
+                'status_label' => 'غير متوفر',
+            ];
+        }
+
+        return [
+            'has_passport' => true,
+            'is_approved'  => (bool) $passport->is_approved,
+            'status_label' => $passport->is_approved ? 'جواز ساري' : 'قيد المراجعة',
+        ];
+    }
+
+    public function getAllDocumentImagesAttribute()
+    {
+        return $this->documents
+            ? $this->documents->filter(fn ($doc) => $doc->is_image)->values()
+            : collect([]);
+    }
+
     public function getDisplayNameAttribute(): ?string
     {
         return $this->name ?? $this->company?->company_name;

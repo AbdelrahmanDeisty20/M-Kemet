@@ -19,13 +19,30 @@ class Document extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getUrlAttribute(): string
+    {
+        return $this->secure_url;
+    }
+
     public function getSecureUrlAttribute(): string
     {
-        if ($this->document_type === 'personal_photo' && $this->disk === 'public') {
+        if (filter_var($this->file_path, FILTER_VALIDATE_URL)) {
+            return $this->file_path;
+        }
+
+        if ($this->disk === 'public' || $this->document_type === 'personal_photo') {
             return Storage::disk('public')->url($this->file_path);
         }
 
-        return route('admin.documents.file', $this->id);
+        if (\Illuminate\Support\Facades\Route::has('documents.file')) {
+            return route('documents.file', $this->id);
+        }
+
+        if (\Illuminate\Support\Facades\Route::has('admin.documents.file')) {
+            return route('admin.documents.file', $this->id);
+        }
+
+        return Storage::url($this->file_path);
     }
 
     public function getAdminFileUrlAttribute(): string
