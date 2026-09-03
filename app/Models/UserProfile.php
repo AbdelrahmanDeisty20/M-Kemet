@@ -66,6 +66,11 @@ class UserProfile extends Model
         return $this->belongsTo(Qualification::class, 'qualification_id');
     }
 
+    public function qualificationRelation(): BelongsTo
+    {
+        return $this->belongsTo(Qualification::class, 'qualification_id');
+    }
+
     public function experienceLevel(): BelongsTo
     {
         return $this->belongsTo(ExperienceLevel::class, 'experience_level_id');

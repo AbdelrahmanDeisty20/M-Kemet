@@ -26,7 +26,7 @@ class CandidateProfileResource extends JsonResource
             'current_country'        => new CountryResource($this->whenLoaded('currentCountry')),
             'qualification_id'       => $this->qualification_id,
             'qualification_text'     => $this->qualification,
-            'qualification'          => new QualificationResource($this->whenLoaded('qualification')),
+            'qualification'          => new QualificationResource($this->whenLoaded('qualificationRelation', fn() => $this->qualificationRelation, fn() => $this->qualificationRelation ?? $this->qualification)),
             'sub_specialization'     => $this->sub_specialization,
             'experience_years'       => $this->experience_years,
             'experience_level'       => new ExperienceLevelResource($this->whenLoaded('experienceLevel')),
