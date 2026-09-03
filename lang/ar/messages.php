@@ -40,7 +40,10 @@ return [
     'passwordResetSuccessfully'      => 'تم تغيير كلمة المرور بنجاح، يمكنك الآن تسجيل الدخول',
     'tokenRefreshedSuccessfully'     => 'تم تجديد التوكن بنجاح',
     'bookmarkAddedSuccessfully'      => 'تم حفظ الباحث عن العمل في المفضلة بنجاح',
-    'bookmarkRemovedSuccessfully'    => 'تم إزالة الباحث عن العمل من المفضلة بنجاح',
+    'accountDeletedSuccessfully'     => 'تم حذف الحساب والبيانات التابعة له بنجاح',
+    'companyOnly'                    => 'هذا الإجراء مخصص لحسابات الشركات فقط',
+    'contactRequestSentSuccessfully' => 'تم إرسال طلب التواصل للباحث عن العمل بنجاح',
+    'contactRequestAlreadySent'     => 'تم إرسال طلب التواصل لهذا الباحث عن العمل مسبقاً',
 
     // Mail Strings
     'otp_mail_subject'         => 'رمز التحقق الخاص بك - منصة أم كميت (M-Kemet)',

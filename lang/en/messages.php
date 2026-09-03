@@ -40,7 +40,10 @@ return [
     'passwordResetSuccessfully'      => 'Password reset successfully. You can now log in.',
     'tokenRefreshedSuccessfully'     => 'Token refreshed successfully',
     'bookmarkAddedSuccessfully'      => 'Job seeker added to bookmarks successfully',
-    'bookmarkRemovedSuccessfully'    => 'Job seeker removed from bookmarks successfully',
+    'accountDeletedSuccessfully'     => 'Account and associated data deleted successfully',
+    'companyOnly'                    => 'This action is restricted to company accounts only',
+    'contactRequestSentSuccessfully' => 'Contact request sent to the job seeker successfully',
+    'contactRequestAlreadySent'     => 'Contact request has already been sent to this job seeker',
 
     // Mail Strings
     'otp_mail_subject'         => 'Your Verification Code - M-Kemet Platform',

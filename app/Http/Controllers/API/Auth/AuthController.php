@@ -65,4 +65,9 @@ class AuthController extends Controller
     {
         return $this->authService->logoutAllDevices();
     }
+
+    public function deleteAccount(): JsonResponse
+    {
+        return $this->authService->deleteAccount();
+    }
 }

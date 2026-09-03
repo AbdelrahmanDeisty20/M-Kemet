@@ -12,6 +12,7 @@ use App\Http\Controllers\API\QualificationController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\API\ContactRequestController;
 use App\Http\Controllers\API\JobSeekerController;
 
 Route::middleware([SetLocale::class])->group(function () {
@@ -41,10 +42,16 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/profile', [AuthController::class, 'profile']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/logout-all', [AuthController::class, 'logoutAllDevices']);
+        Route::delete('/delete-account', [AuthController::class, 'deleteAccount']);
 
         // مسارات حفظ الباحثين عن العمل في المفضلة (Bookmarks)
         Route::get('/bookmarks', [JobSeekerController::class, 'bookmarkedList']);
         Route::post('/job-seekers/{id}/bookmark', [JobSeekerController::class, 'toggleBookmark']);
+
+        // مسارات طلبات التواصل / التوظيف (Contact Requests / Applications)
+        Route::post('/job-seekers/{id}/contact-request', [ContactRequestController::class, 'store']);
+        Route::get('/company/contact-requests', [ContactRequestController::class, 'companyRequests']);
+        Route::get('/candidate/contact-requests', [ContactRequestController::class, 'candidateRequests']);
 
         // مسارات تكميل ملف الباحث عن عمل (Candidate Profile Completion)
         // middleware('candidate') يمنع الشركات من الوصول لهذه المسارات

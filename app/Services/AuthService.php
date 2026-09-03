@@ -322,4 +322,41 @@ class AuthService
 
         return $this->successResponse(null, __('messages.logoutAllDevicesSuccessFully'));
     }
+
+    /**
+     * حذف الحساب بشكل كامل (Delete Account)
+     */
+    public function deleteAccount(): JsonResponse
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return $this->errorResponse(__('messages.unauthenticated'), 401);
+        }
+
+        DB::transaction(function () use ($user) {
+            // Delete candidate documents from storage
+            if ($user->documents) {
+                foreach ($user->documents as $doc) {
+                    \Illuminate\Support\Facades\Storage::disk($doc->disk ?? 'private')->delete($doc->file_path);
+                }
+            }
+
+            // Delete candidate video from storage
+            if ($user->video) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->video->video_path);
+                if ($user->video->thumbnail_path) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($user->video->thumbnail_path);
+                }
+            }
+
+            // Revoke all tokens
+            $user->tokens()->delete();
+            RefreshToken::where('user_id', $user->id)->delete();
+
+            // Delete user record (cascades to profile, company, documents, applications, etc.)
+            $user->delete();
+        });
+
+        return $this->successResponse(null, __('messages.accountDeletedSuccessfully'));
+    }
 }
