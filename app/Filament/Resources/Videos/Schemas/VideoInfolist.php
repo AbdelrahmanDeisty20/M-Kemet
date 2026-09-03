@@ -1,49 +1,57 @@
 <?php
 
-namespace App\Filament\Resources\Companies\Schemas;
+namespace App\Filament\Resources\Videos\Schemas;
 
 use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
-class CompanyInfolist
+class VideoInfolist
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-                Section::make('بيانات الشركة الأساسية')
-                    ->icon('heroicon-o-building-office')
+                Section::make('بيانات المرشح صاحب الفيديو')
+                    ->icon('heroicon-o-user')
                     ->columns(3)
                     ->schema([
-                        TextEntry::make('company_name')
-                            ->label('اسم الشركة')
-                            ->placeholder('-'),
-                        TextEntry::make('commercial_register_number')
-                            ->label('رقم السجل التجاري')
-                            ->placeholder('-'),
-                        TextEntry::make('industry')
-                            ->label('قطاع النشاط')
-                            ->badge()
-                            ->color('warning')
-                            ->placeholder('-'),
                         TextEntry::make('user.name')
-                            ->label('المستخدم المسؤول')
+                            ->label('الاسم الكامل')
                             ->placeholder('-'),
                         TextEntry::make('user.email')
-                            ->label('البريد الإلكتروني للتواصل')
+                            ->label('البريد الإلكتروني')
                             ->placeholder('-'),
                         TextEntry::make('user.phone')
                             ->label('رقم الهاتف')
                             ->placeholder('-'),
                     ]),
 
-                Section::make('حالة واعتماد الشركة')
+                Section::make('تفاصيل ومواصفات الفيديو')
+                    ->icon('heroicon-o-video-camera')
+                    ->columns(3)
+                    ->schema([
+                        TextEntry::make('video_path')
+                            ->label('مشاهدة الفيديو')
+                            ->url(fn ($record) => $record?->video_url, shouldOpenInNewTab: true)
+                            ->formatStateUsing(fn () => 'فتح ورابط مشاهدة الفيديو 🎥')
+                            ->color('primary'),
+                        TextEntry::make('duration_seconds')
+                            ->label('مدة الفيديو')
+                            ->suffix(' ثانية')
+                            ->placeholder('-'),
+                        TextEntry::make('file_size_mb')
+                            ->label('حجم الفيديو')
+                            ->suffix(' MB')
+                            ->placeholder('-'),
+                    ]),
+
+                Section::make('حالة واعتماد الفيديو')
                     ->icon('heroicon-o-check-badge')
                     ->columns(2)
                     ->schema([
                         TextEntry::make('status')
-                            ->label('حالة الشركة')
+                            ->label('حالة الفيديو')
                             ->badge()
                             ->color(fn (string $state): string => match ($state) {
                                 'approved' => 'success',
@@ -52,25 +60,25 @@ class CompanyInfolist
                                 default    => 'gray',
                             })
                             ->formatStateUsing(fn (string $state): string => match ($state) {
-                                'approved' => 'معتمدة',
+                                'approved' => 'معتمد',
                                 'pending'  => 'قيد المراجعة',
-                                'rejected' => 'مرفوضة',
+                                'rejected' => 'مرفوض',
                                 default    => $state,
                             }),
                         TextEntry::make('rejection_reason')
-                            ->label('سبب الرفض')
+                            ->label('سبب الرفض (إن وجد)')
                             ->placeholder('لا يوجد')
                             ->visible(fn ($record) => $record?->status === 'rejected')
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('التواريخ والسجلات')
+                Section::make('تاريخ الرفع والتسجيل')
                     ->icon('heroicon-o-clock')
                     ->columns(2)
                     ->collapsible()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('تاريخ التسجيل')
+                            ->label('تاريخ الرفع')
                             ->dateTime('Y-m-d H:i:s'),
                         TextEntry::make('updated_at')
                             ->label('آخر تحديث')

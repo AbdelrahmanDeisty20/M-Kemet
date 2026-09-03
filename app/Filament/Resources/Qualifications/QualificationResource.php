@@ -20,9 +20,31 @@ class QualificationResource extends Resource
 {
     protected static ?string $model = Qualification::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'name_ar';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.data_references');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.qualifications');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.qualification');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.qualifications');
+    }
 
     public static function form(Schema $schema): Schema
     {

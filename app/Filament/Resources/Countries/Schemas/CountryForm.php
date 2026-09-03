@@ -13,14 +13,24 @@ class CountryForm
         return $schema
             ->components([
                 TextInput::make('name_ar')
-                    ->required(),
+                    ->label('اسم الدولة بالعربية')
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('name_en')
-                    ->required(),
+                    ->label('اسم الدولة بالإنجليزية')
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('code')
-                    ->required(),
-                TextInput::make('flag_icon_path'),
+                    ->label('الكود (ISO)')
+                    ->required()
+                    ->maxLength(10),
+                TextInput::make('flag_icon_path')
+                    ->label('مسار أيقونة العلم')
+                    ->maxLength(500),
                 Toggle::make('is_active')
-                    ->required(),
+                    ->label('نشطة')
+                    ->required()
+                    ->default(true),
             ]);
     }
 }

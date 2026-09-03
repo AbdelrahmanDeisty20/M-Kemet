@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class CountriesTable
@@ -17,26 +18,31 @@ class CountriesTable
         return $table
             ->columns([
                 TextColumn::make('name_ar')
-                    ->searchable(),
+                    ->label('اسم الدولة (عربي)')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('name_en')
+                    ->label('اسم الدولة (إنجليزي)')
                     ->searchable(),
                 TextColumn::make('code')
-                    ->searchable(),
-                TextColumn::make('flag_icon_path')
-                    ->searchable(),
+                    ->label('الكود')
+                    ->searchable()
+                    ->badge()
+                    ->color('gray'),
                 IconColumn::make('is_active')
+                    ->label('نشطة')
                     ->boolean(),
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('تاريخ الإضافة')
+                    ->dateTime('Y-m-d')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                TernaryFilter::make('is_active')
+                    ->label('الحالة')
+                    ->trueLabel('نشطة')
+                    ->falseLabel('غير نشطة'),
             ])
             ->recordActions([
                 ViewAction::make(),

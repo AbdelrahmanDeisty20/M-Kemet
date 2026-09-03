@@ -20,9 +20,31 @@ class ProfessionResource extends Resource
 {
     protected static ?string $model = Profession::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'name_ar';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.data_references');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.professions');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.profession');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.professions');
+    }
 
     public static function form(Schema $schema): Schema
     {

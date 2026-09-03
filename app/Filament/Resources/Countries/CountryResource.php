@@ -20,9 +20,31 @@ class CountryResource extends Resource
 {
     protected static ?string $model = Country::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
+
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $recordTitleAttribute = 'name_ar';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.data_references');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.countries');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.country');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.countries');
+    }
 
     public static function form(Schema $schema): Schema
     {

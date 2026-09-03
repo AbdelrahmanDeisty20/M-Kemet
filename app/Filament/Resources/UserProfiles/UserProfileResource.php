@@ -20,9 +20,31 @@ class UserProfileResource extends Resource
 {
     protected static ?string $model = UserProfile::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserCircle;
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'qualification';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.user_management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.candidates');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.candidate');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.candidates');
+    }
 
     public static function form(Schema $schema): Schema
     {

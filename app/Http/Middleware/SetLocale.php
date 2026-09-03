@@ -10,7 +10,9 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $request->header('Accept-Language') 
+        $locale = session('locale')
+            ?? session('filament_language_switch_locale')
+            ?? $request->header('Accept-Language') 
             ?? $request->header('lang') 
             ?? $request->get('lang') 
             ?? config('app.locale', 'ar');

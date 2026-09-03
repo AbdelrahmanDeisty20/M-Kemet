@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class UserProfilesTable
@@ -17,45 +18,60 @@ class UserProfilesTable
         return $table
             ->columns([
                 TextColumn::make('user.name')
-                    ->searchable(),
-                TextColumn::make('birth_date')
-                    ->date()
+                    ->label('الباحث عن عمل')
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('gender')
-                    ->badge(),
-                TextColumn::make('gender.id')
-                    ->searchable(),
-                TextColumn::make('currentCountry.id')
-                    ->searchable(),
-                TextColumn::make('qualification')
-                    ->searchable(),
+                TextColumn::make('qualification.name_ar')
+                    ->label('المؤهل الدراسي')
+                    ->searchable()
+                    ->badge()
+                    ->color('info'),
                 TextColumn::make('sub_specialization')
-                    ->searchable(),
-                TextColumn::make('profession.id')
-                    ->searchable(),
+                    ->label('التخصص الفرعي')
+                    ->searchable()
+                    ->limit(30),
+                TextColumn::make('profession.name_ar')
+                    ->label('المهنة')
+                    ->searchable()
+                    ->badge(),
                 TextColumn::make('experience_years')
+                    ->label('سنوات الخبرة')
                     ->numeric()
-                    ->sortable(),
-                TextColumn::make('experienceLevel.id')
-                    ->searchable(),
+                    ->sortable()
+                    ->suffix(' سنة'),
                 TextColumn::make('expected_salary')
+                    ->label('الراتب المتوقع')
                     ->numeric()
                     ->sortable(),
                 IconColumn::make('willing_to_travel')
+                    ->label('مستعد للسفر')
                     ->boolean(),
                 TextColumn::make('status')
-                    ->badge(),
+                    ->label('حالة الملف')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'approved' => 'success',
+                        'pending'  => 'warning',
+                        'rejected' => 'danger',
+                        default    => 'gray',
+                    }),
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('تاريخ التسجيل')
+                    ->dateTime('Y-m-d')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('الحالة')
+                    ->options([
+                        'approved' => 'معتمد',
+                        'pending'  => 'قيد المراجعة',
+                        'rejected' => 'مرفوض',
+                    ]),
+                SelectFilter::make('qualification_id')
+                    ->label('المؤهل الدراسي')
+                    ->relationship('qualification', 'name_ar'),
             ])
             ->recordActions([
                 ViewAction::make(),

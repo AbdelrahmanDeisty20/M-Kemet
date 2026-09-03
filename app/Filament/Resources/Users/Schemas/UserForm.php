@@ -13,21 +13,35 @@ class UserForm
     {
         return $schema
             ->components([
-                TextInput::make('name'),
+                TextInput::make('name')
+                    ->label('الاسم الكامل')
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('البريد الإلكتروني')
                     ->email()
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('phone')
-                    ->tel(),
-                Select::make('country_id')
-                    ->relationship('country', 'id'),
+                    ->label('رقم الهاتف')
+                    ->tel()
+                    ->maxLength(20),
                 Select::make('user_type')
-                    ->options(['candidate' => 'Candidate', 'company' => 'Company', 'admin' => 'Admin'])
+                    ->label('نوع المستخدم')
+                    ->options([
+                        'candidate' => 'باحث عن عمل',
+                        'company'   => 'شركة',
+                        'admin'     => 'مدير',
+                    ])
                     ->default('candidate')
                     ->required(),
                 Select::make('status')
-                    ->options(['active' => 'Active', 'pending' => 'Pending', 'suspended' => 'Suspended'])
+                    ->label('حالة الحساب')
+                    ->options([
+                        'active'    => 'نشط',
+                        'pending'   => 'قيد التفعيل',
+                        'suspended' => 'موقوف',
+                    ])
                     ->default('active')
                     ->required(),
                 Select::make('roles')
@@ -35,9 +49,10 @@ class UserForm
                     ->relationship('roles', 'name')
                     ->multiple()
                     ->preload(),
-                TextInput::make('otp_code'),
-                DateTimePicker::make('email_verified_at'),
+                DateTimePicker::make('email_verified_at')
+                    ->label('تاريخ التحقق من البريد'),
                 TextInput::make('password')
+                    ->label('كلمة المرور')
                     ->password()
                     ->dehydrated(fn ($state) => filled($state))
                     ->required(fn (string $context): bool => $context === 'create'),

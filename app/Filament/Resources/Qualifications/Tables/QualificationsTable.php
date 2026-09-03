@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class QualificationsTable
@@ -17,27 +18,35 @@ class QualificationsTable
         return $table
             ->columns([
                 TextColumn::make('name_ar')
-                    ->searchable(),
+                    ->label('المؤهل (عربي)')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('name_en')
+                    ->label('المؤهل (إنجليزي)')
                     ->searchable(),
                 TextColumn::make('code')
-                    ->searchable(),
+                    ->label('الكود')
+                    ->searchable()
+                    ->badge()
+                    ->color('gray'),
                 TextColumn::make('sort_order')
+                    ->label('الترتيب')
                     ->numeric()
                     ->sortable(),
                 IconColumn::make('is_active')
+                    ->label('نشط')
                     ->boolean(),
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('تاريخ الإضافة')
+                    ->dateTime('Y-m-d')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                TernaryFilter::make('is_active')
+                    ->label('الحالة')
+                    ->trueLabel('نشط')
+                    ->falseLabel('غير نشط'),
             ])
             ->recordActions([
                 ViewAction::make(),

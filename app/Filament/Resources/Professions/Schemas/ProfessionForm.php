@@ -12,14 +12,22 @@ class ProfessionForm
     {
         return $schema
             ->components([
-                TextInput::make('title_ar')
-                    ->required(),
-                TextInput::make('title_en'),
-                TextInput::make('category')
+                TextInput::make('name_ar')
+                    ->label('اسم المهنة بالعربية')
                     ->required()
-                    ->default('عام'),
+                    ->maxLength(255),
+                TextInput::make('name_en')
+                    ->label('اسم المهنة بالإنجليزية')
+                    ->maxLength(255),
+                TextInput::make('category')
+                    ->label('التصنيف')
+                    ->required()
+                    ->default('عام')
+                    ->maxLength(100),
                 Toggle::make('is_active')
-                    ->required(),
+                    ->label('نشطة')
+                    ->required()
+                    ->default(true),
             ]);
     }
 }

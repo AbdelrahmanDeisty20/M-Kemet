@@ -25,7 +25,17 @@ class Video extends Model
 
     public function getVideoUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->video_path);
+        return route('admin.videos.stream', $this->id);
+    }
+
+    public function getAdminStreamUrlAttribute(): string
+    {
+        return route('admin.videos.stream', $this->id);
+    }
+
+    public function getAdminDownloadUrlAttribute(): string
+    {
+        return route('admin.videos.download', $this->id);
     }
 
     public function getThumbnailUrlAttribute(): ?string

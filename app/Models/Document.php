@@ -25,6 +25,39 @@ class Document extends Model
             return Storage::disk('public')->url($this->file_path);
         }
 
-        return url("/api/documents/{$this->id}/file");
+        return route('admin.documents.file', $this->id);
+    }
+
+    public function getAdminFileUrlAttribute(): string
+    {
+        return route('admin.documents.file', $this->id);
+    }
+
+    public function getAdminDownloadUrlAttribute(): string
+    {
+        return route('admin.documents.download', $this->id);
+    }
+
+    public function getIsImageAttribute(): bool
+    {
+        $ext = strtolower(pathinfo($this->file_path, PATHINFO_EXTENSION));
+        return in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']) || $this->document_type === 'personal_photo';
+    }
+
+    public function getIsPdfAttribute(): bool
+    {
+        $ext = strtolower(pathinfo($this->file_path, PATHINFO_EXTENSION));
+        return $ext === 'pdf' || $this->document_type === 'cv';
+    }
+
+    public function getDocumentTypeNameAttribute(): string
+    {
+        return match ($this->document_type) {
+            'cv'             => 'السيرة الذاتية (CV)',
+            'national_id'    => 'الهوية الوطنية',
+            'passport'       => 'جواز السفر',
+            'personal_photo' => 'صورة شخصية',
+            default          => $this->document_type,
+        };
     }
 }

@@ -20,9 +20,31 @@ class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
+
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $recordTitleAttribute = 'company_name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.user_management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.companies');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.company');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.companies');
+    }
 
     public static function form(Schema $schema): Schema
     {

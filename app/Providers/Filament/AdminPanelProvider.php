@@ -29,8 +29,15 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName(fn () => app()->getLocale() === 'ar' ? 'منصة أم كميت | M-Kemet' : 'M-Kemet Platform')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Sky,
+            ])
+            ->navigationGroups([
+                __('admin.user_management'),
+                __('admin.content_documents'),
+                __('admin.data_references'),
+                __('admin.access_permissions'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -52,6 +59,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \App\Http\Middleware\SetLocale::class,
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),

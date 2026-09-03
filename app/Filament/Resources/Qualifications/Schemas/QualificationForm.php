@@ -13,16 +13,25 @@ class QualificationForm
         return $schema
             ->components([
                 TextInput::make('name_ar')
-                    ->required(),
+                    ->label('الاسم بالعربية')
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('name_en')
-                    ->required(),
-                TextInput::make('code'),
+                    ->label('الاسم بالإنجليزية')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('code')
+                    ->label('الكود المختصر')
+                    ->maxLength(50),
                 TextInput::make('sort_order')
+                    ->label('الترتيب')
                     ->required()
                     ->numeric()
                     ->default(0),
                 Toggle::make('is_active')
-                    ->required(),
+                    ->label('نشط')
+                    ->required()
+                    ->default(true),
             ]);
     }
 }
