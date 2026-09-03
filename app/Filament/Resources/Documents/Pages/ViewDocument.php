@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Documents\Pages;
 use App\Filament\Resources\Documents\DocumentResource;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -17,16 +16,19 @@ class ViewDocument extends ViewRecord
     {
         return [
             Action::make('approve_all')
-                ->label('قبول واعتماد كافة المستندات')
+                ->label('قبول واعتماد كافة المستندات والباحث عن العمل')
                 ->icon('heroicon-o-check-badge')
                 ->color('success')
                 ->action(function () {
                     $user = $this->getRecord();
+                    
+                    // 1. Approve all documents
                     $user->documents()->update([
                         'is_approved'      => true,
                         'rejection_reason' => null,
                     ]);
 
+                    // 2. Approve video if exists
                     if ($user->video) {
                         $user->video()->update([
                             'status'           => 'approved',
@@ -34,35 +36,18 @@ class ViewDocument extends ViewRecord
                         ]);
                     }
 
+                    // 3. Approve UserProfile status
+                    if ($user->candidateProfile) {
+                        $user->candidateProfile()->update([
+                            'status'           => 'approved',
+                            'rejection_reason' => null,
+                        ]);
+                    }
+
                     Notification::make()
-                        ->title('تم اعتماد كافة المستندات والفيديو بنجاح')
+                        ->title('تم قبول واعتماد كافة المستندات وتفعيل الباحث عن العمل (UserProfile = approved) بنجاح')
                         ->success()
                         ->send();
-                }),
-
-            Action::make('reject_video')
-                ->label('رفض الفيديو التعريفي')
-                ->icon('heroicon-o-x-circle')
-                ->color('danger')
-                ->visible(fn () => $this->getRecord()?->video !== null)
-                ->form([
-                    TextInput::make('rejection_reason')
-                        ->label('سبب رفض الفيديو')
-                        ->required(),
-                ])
-                ->action(function (array $data) {
-                    $user = $this->getRecord();
-                    if ($user->video) {
-                        $user->video()->update([
-                            'status'           => 'rejected',
-                            'rejection_reason' => $data['rejection_reason'],
-                        ]);
-
-                        Notification::make()
-                            ->title('تم تسجيل رفض الفيديو التعريفي')
-                            ->warning()
-                            ->send();
-                    }
                 }),
 
             EditAction::make()

@@ -2,10 +2,14 @@
 
 namespace App\Filament\Resources\Documents\Schemas;
 
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Actions\Action;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Schema;
 
 class DocumentInfolist
@@ -14,7 +18,7 @@ class DocumentInfolist
     {
         return $schema
             ->components([
-                Section::make('بيانات صاحب المستندات')
+                Section::make('بيانات صاحب المستندات والباحث عن العمل')
                     ->icon('heroicon-o-user')
                     ->columns(4)
                     ->columnSpanFull()
@@ -28,11 +32,55 @@ class DocumentInfolist
                         TextEntry::make('phone')
                             ->label('رقم الهاتف')
                             ->placeholder('-'),
-                        TextEntry::make('documents_count')
-                            ->label('عدد المستندات المرفوعة')
+                        TextEntry::make('candidateProfile.status')
+                            ->label('حالة تفعيل الباحث عن العمل')
                             ->badge()
-                            ->color('info')
-                            ->suffix(' مستندات'),
+                            ->color(fn ($state): string => match ($state) {
+                                'approved' => 'success',
+                                'pending'  => 'warning',
+                                'rejected' => 'danger',
+                                default    => 'gray',
+                            })
+                            ->formatStateUsing(fn ($state): string => match ($state) {
+                                'approved' => 'مفعل / مقبول',
+                                'pending'  => 'قيد المراجعة',
+                                'rejected' => 'مرفوض',
+                                default    => $state ?? 'غير محدد',
+                            })
+                            ->suffixAction(
+                                Action::make('changeCandidateStatus')
+                                    ->label('تغيير الحالة')
+                                    ->icon('heroicon-o-pencil-square')
+                                    ->color('primary')
+                                    ->form([
+                                        Select::make('status')
+                                            ->label('الحالة الجديدة لملف الباحث عن العمل')
+                                            ->options([
+                                                'approved' => 'مفعل / مقبول',
+                                                'pending'  => 'قيد المراجعة',
+                                                'rejected' => 'مرفوض',
+                                            ])
+                                            ->default(fn ($record) => $record->candidateProfile?->status ?? 'pending')
+                                            ->required()
+                                            ->reactive(),
+                                        TextInput::make('rejection_reason')
+                                            ->label('سبب الرفض')
+                                            ->visible(fn ($get) => $get('status') === 'rejected'),
+                                    ])
+                                    ->action(function ($record, array $data) {
+                                        if ($record->candidateProfile) {
+                                            $record->candidateProfile->update([
+                                                'status'           => $data['status'],
+                                                'rejection_reason' => $data['status'] === 'rejected' ? ($data['rejection_reason'] ?? 'تم رفض الملف') : null,
+                                            ]);
+
+                                            Notification::make()
+                                                ->title('تم تحديث حالة ملف الباحث عن عمل بنجاح')
+                                                ->success()
+                                                ->send();
+                                        }
+                                    })
+                            ),
                     ]),
 
                 Section::make('الفيديو التعريفي للمرشح (Intro Video) 🎥')
@@ -55,7 +103,41 @@ class DocumentInfolist
                                 'pending'  => 'قيد المراجعة',
                                 'rejected' => 'مرفوض',
                                 default    => $state,
-                            }),
+                            })
+                            ->suffixAction(
+                                Action::make('changeVideoStatus')
+                                    ->label('تغيير حالة الفيديو')
+                                    ->icon('heroicon-o-pencil-square')
+                                    ->color('warning')
+                                    ->form([
+                                        Select::make('status')
+                                            ->label('الحالة الجديدة للفيديو')
+                                            ->options([
+                                                'approved' => 'معتمد',
+                                                'pending'  => 'قيد المراجعة',
+                                                'rejected' => 'مرفوض',
+                                            ])
+                                            ->default(fn ($record) => $record->video?->status ?? 'pending')
+                                            ->required()
+                                            ->reactive(),
+                                        TextInput::make('rejection_reason')
+                                            ->label('سبب الرفض')
+                                            ->visible(fn ($get) => $get('status') === 'rejected'),
+                                    ])
+                                    ->action(function ($record, array $data) {
+                                        if ($record->video) {
+                                            $record->video->update([
+                                                'status'           => $data['status'],
+                                                'rejection_reason' => $data['status'] === 'rejected' ? ($data['rejection_reason'] ?? 'تم رفض الفيديو') : null,
+                                            ]);
+
+                                            Notification::make()
+                                                ->title('تم تحديث حالة الفيديو التعريفي بنجاح')
+                                                ->success()
+                                                ->send();
+                                        }
+                                    })
+                            ),
                         TextEntry::make('video.duration_seconds')
                             ->label('مدة الفيديو')
                             ->suffix(' ثانية')
@@ -109,7 +191,42 @@ class DocumentInfolist
                                         str_contains($state, 'مقبول')  => 'success',
                                         str_contains($state, 'مرفوض') => 'danger',
                                         default                       => 'warning',
-                                    }),
+                                    })
+                                    ->suffixAction(
+                                        Action::make('changeDocumentStatus')
+                                            ->label('تغيير حالة المستند')
+                                            ->icon('heroicon-o-pencil-square')
+                                            ->color('primary')
+                                            ->form([
+                                                Select::make('status')
+                                                    ->label('الحالة الجديدة للمستند')
+                                                    ->options([
+                                                        'approved' => 'مقبول / معتمد',
+                                                        'pending'  => 'قيد المراجعة',
+                                                        'rejected' => 'مرفوض',
+                                                    ])
+                                                    ->default(fn ($record) => $record->is_approved ? 'approved' : ($record->rejection_reason ? 'rejected' : 'pending'))
+                                                    ->required()
+                                                    ->reactive(),
+                                                TextInput::make('rejection_reason')
+                                                    ->label('سبب الرفض')
+                                                    ->visible(fn ($get) => $get('status') === 'rejected'),
+                                            ])
+                                            ->action(function ($record, array $data) {
+                                                $isApproved = $data['status'] === 'approved';
+                                                $rejectionReason = $data['status'] === 'rejected' ? ($data['rejection_reason'] ?? 'تم رفض المستند') : null;
+
+                                                $record->update([
+                                                    'is_approved'      => $isApproved,
+                                                    'rejection_reason' => $rejectionReason,
+                                                ]);
+
+                                                Notification::make()
+                                                    ->title('تم تحديث حالة المستند بنجاح')
+                                                    ->success()
+                                                    ->send();
+                                            })
+                                    ),
 
                                 ViewEntry::make('file_preview')
                                     ->label('معاينة وتحميل المستند')
