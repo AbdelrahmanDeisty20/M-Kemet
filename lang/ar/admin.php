@@ -22,6 +22,10 @@ return [
     'qualification'         => 'مؤهل دراسي',
     'countries'             => 'الدول والبلدان',
     'country'               => 'دولة',
+    'applications'          => 'طلبات التواصل والتوظيف',
+    'application'           => 'طلب تواصل',
+    'bookmarks'             => 'المفضلة والمحفوظات',
+    'bookmark'              => 'عنصر محفوظ',
 
     // User types & statuses
     'type_admin'            => 'مدير النظام',

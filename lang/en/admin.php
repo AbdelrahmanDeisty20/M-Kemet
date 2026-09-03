@@ -22,6 +22,10 @@ return [
     'qualification'         => 'Qualification',
     'countries'             => 'Countries & Nations',
     'country'               => 'Country',
+    'applications'          => 'Contact Requests & Applications',
+    'application'           => 'Contact Request',
+    'bookmarks'             => 'Bookmarks & Saved',
+    'bookmark'              => 'Bookmarked Item',
 
     // User types & statuses
     'type_admin'            => 'System Admin',
