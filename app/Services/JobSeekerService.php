@@ -78,15 +78,16 @@ class JobSeekerService
             });
         }
 
-        // Status Filter
-        if ($request->filled('status')) {
-            $query->whereHas('candidateProfile', function ($q) use ($request) {
-                $q->where('status', $request->input('status'));
+        // Filter by Candidate Profile status ('approved' by default)
+        $status = $request->input('status', 'approved');
+        if ($status !== 'all') {
+            $query->whereHas('candidateProfile', function ($q) use ($status) {
+                $q->where('status', $status);
             });
         }
 
-        $perPage = (int) $request->input('per_page', 15);
-        $candidates = $query->latest()->paginate($perPage);
+        $perPage = (int) $request->input('per_page', 10);
+        $candidates = $query->paginate($perPage);
 
         return $this->paginated(
             JobSeekerCardResource::class,
