@@ -44,6 +44,8 @@ return [
     'companyOnly'                    => 'This action is restricted to company accounts only',
     'contactRequestSentSuccessfully' => 'Contact request sent to the job seeker successfully',
     'contactRequestAlreadySent'     => 'Contact request has already been sent to this job seeker',
+    'search_keyword_required'       => 'Search keyword is required (e.g., name, profession, or skill)',
+    'filter_option_required'        => 'At least one filter criterion is required (e.g., country, profession, gender, or passport status)',
 
     // Mail Strings
     'otp_mail_subject'         => 'Your Verification Code - M-Kemet Platform',

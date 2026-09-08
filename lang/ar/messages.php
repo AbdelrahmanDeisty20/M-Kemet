@@ -44,6 +44,8 @@ return [
     'companyOnly'                    => 'هذا الإجراء مخصص لحسابات الشركات فقط',
     'contactRequestSentSuccessfully' => 'تم إرسال طلب التواصل للباحث عن العمل بنجاح',
     'contactRequestAlreadySent'     => 'تم إرسال طلب التواصل لهذا الباحث عن العمل مسبقاً',
+    'search_keyword_required'       => 'مفتاح البحث مطلوب (مثل الاسم، المهنة، أو المهارة)',
+    'filter_option_required'        => 'يجب اختيار عنصر فلترة واحد على الأقل (مثل الدولة، المهنة، الجنس، أو حالة جواز السفر)',
 
     // Mail Strings
     'otp_mail_subject'         => 'رمز التحقق الخاص بك - منصة أم كميت (M-Kemet)',

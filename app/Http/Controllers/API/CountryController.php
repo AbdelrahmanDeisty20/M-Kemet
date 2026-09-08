@@ -19,4 +19,9 @@ class CountryController extends Controller
     {
         return $this->countryService->getCountries();
     }
+
+    public function top6(): JsonResponse
+    {
+        return $this->countryService->getTopCountries(6);
+    }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\JobSeekerFilterRequest;
+use App\Http\Requests\API\JobSeekerSearchRequest;
 use App\Services\JobSeekerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,6 +25,30 @@ class JobSeekerController extends Controller
     public function index(Request $request): JsonResponse
     {
         return $this->jobSeekerService->getJobSeekers($request);
+    }
+
+    /**
+     * Search job seekers by name, profession, or skill.
+     */
+    public function search(JobSeekerSearchRequest $request): JsonResponse
+    {
+        return $this->jobSeekerService->searchJobSeekers($request);
+    }
+
+    /**
+     * Filter job seekers by country_id, profession_id, gender_id, and passport_status.
+     */
+    public function filter(JobSeekerFilterRequest $request): JsonResponse
+    {
+        return $this->jobSeekerService->filterJobSeekers($request);
+    }
+
+    /**
+     * Get aggregated filter options for job seekers (top 6 professions, top 6 countries, genders, passport statuses).
+     */
+    public function filterOptions(): JsonResponse
+    {
+        return $this->jobSeekerService->getFilterOptions();
     }
 
     /**

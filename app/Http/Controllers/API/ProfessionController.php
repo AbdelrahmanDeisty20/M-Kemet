@@ -19,4 +19,9 @@ class ProfessionController extends Controller
     {
         return $this->professionService->getProfessions();
     }
+
+    public function top6(): JsonResponse
+    {
+        return $this->professionService->getTopProfessions(6);
+    }
 }

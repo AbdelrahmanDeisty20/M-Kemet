@@ -23,4 +23,22 @@ class ProfessionService
             __('messages.professionsFetchedSuccessfully')
         );
     }
+
+    /**
+     * Get top/popular active professions limited to specified count (default 6)
+     */
+    public function getTopProfessions(int $limit = 6): JsonResponse
+    {
+        $professions = Profession::where('is_active', true)
+            ->withCount('candidates')
+            ->orderByDesc('candidates_count')
+            ->latest()
+            ->take($limit)
+            ->get();
+
+        return $this->successResponse(
+            ProfessionResource::collection($professions),
+            __('messages.professionsFetchedSuccessfully')
+        );
+    }
 }

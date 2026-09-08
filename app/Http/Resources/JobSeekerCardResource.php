@@ -55,7 +55,6 @@ class JobSeekerCardResource extends JsonResource
 
         return [
             'id'                         => $user?->id,
-            'candidate_id'               => $user?->id,
             'user_id'                    => $user?->id,
             'profile_id'                 => $profile?->id,
             'name'                       => $user?->name,

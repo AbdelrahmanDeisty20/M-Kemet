@@ -19,10 +19,20 @@ Route::middleware([SetLocale::class])->group(function () {
     // المسارات العامة (Public Routes)
     Route::get('/genders', [GenderController::class, 'index']);
     Route::get('/countries', [CountryController::class, 'index']);
+    Route::get('/countries/top-6', [CountryController::class, 'top6']);
+    Route::get('/countries/popular', [CountryController::class, 'top6']);
+
     Route::get('/professions', [ProfessionController::class, 'index']);
+    Route::get('/professions/top-6', [ProfessionController::class, 'top6']);
+    Route::get('/professions/popular', [ProfessionController::class, 'top6']);
+
     Route::get('/experience-levels', [ExperienceLevelController::class, 'index']);
     Route::get('/qualifications', [QualificationController::class, 'index']);
+
     Route::get('/job-seekers', [JobSeekerController::class, 'index']);
+    Route::get('/job-seekers/search', [JobSeekerController::class, 'search']);
+    Route::get('/job-seekers/filter', [JobSeekerController::class, 'filter']);
+    Route::get('/job-seekers/filter-options', [JobSeekerController::class, 'filterOptions']);
     Route::get('/job-seekers/{id}', [JobSeekerController::class, 'show']);
 
     Route::post('/register/company', [AuthController::class, 'register']);
