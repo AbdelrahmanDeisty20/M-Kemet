@@ -56,7 +56,6 @@ class JobSeekerCardResource extends JsonResource
         return [
             'id'                         => $user?->id,
             'user_id'                    => $user?->id,
-            'profile_id'                 => $profile?->id,
             'name'                       => $user?->name,
             'is_verified'                => $isVerified,
             'verification_badge'         => $isVerified ? 'محقق' : 'غير محقق',
