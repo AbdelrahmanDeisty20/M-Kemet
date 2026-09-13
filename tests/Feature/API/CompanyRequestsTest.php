@@ -118,12 +118,10 @@ class CompanyRequestsTest extends TestCase
                      'status' => true,
                      'data'   => [
                          [
-                             'id'                   => $application->id,
-                             'candidate_profile_id' => $this->candidateProfile->id,
-                             'name'                 => 'أحمد محمود العبد',
-                             'profession'           => 'مهندس برمجيات',
-                             'status'               => 'pending',
-                             'status_label'         => 'طلب تواصل قيد الانتظار',
+                             'id'           => $application->id,
+                             'name'         => 'أحمد محمود العبد',
+                             'status'       => 'pending',
+                             'status_label' => 'طلب تواصل قيد الانتظار',
                          ]
                      ]
                  ])
@@ -133,13 +131,14 @@ class CompanyRequestsTest extends TestCase
                      'data' => [
                          '*' => [
                              'id',
-                             'candidate_profile_id',
                              'name',
                              'profession',
                              'request_date',
                              'created_at',
                              'status',
                              'status_label',
+                             'notes',
+                             'candidate',
                          ]
                      ],
                      'pagination' => [

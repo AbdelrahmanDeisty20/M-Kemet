@@ -35,8 +35,8 @@ class JobSeekerCardResource extends JsonResource
         ];
 
         // Profession & Experience
-        $professionModel = $profile?->profession;
-        $professionTitle = $professionModel?->name ?? $profile?->sub_specialization ?? null;
+        $professionModel = $profile?->profession ?? $profile?->professions?->first();
+        $professionTitle = $professionModel?->title ?? $professionModel?->title_ar ?? $profile?->sub_specialization ?? null;
         $experienceYears = $profile?->experience_years ?? 0;
 
         $professionWithExperience = null;

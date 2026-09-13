@@ -105,6 +105,7 @@ class ContactRequestService
                 'company',
                 'candidateProfile.user.documents',
                 'candidateProfile.profession',
+                'candidateProfile.professions',
             ])
             ->latest()
             ->paginate($perPage);

@@ -14,8 +14,10 @@ class CompanyRequestResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $candidateUser = $this->candidateProfile?->user;
-        $profession    = $this->candidateProfile?->profession;
+        $candidateProfile = $this->candidateProfile;
+        $candidateUser    = $candidateProfile?->user;
+        $professionModel  = $candidateProfile?->profession ?? $candidateProfile?->professions?->first();
+        $professionTitle  = $professionModel?->title ?? $professionModel?->title_ar ?? $candidateProfile?->sub_specialization ?? 'غير محدد';
 
         $statusLabel = match ($this->status) {
             'accepted'  => 'تم التوافق / مقبول',
@@ -27,13 +29,13 @@ class CompanyRequestResource extends JsonResource
         return [
             'id'                   => $this->id,
             'name'                 => $candidateUser?->name ?? 'غير محدد',
-            'profession'           => $profession?->title_ar ?? $this->candidateProfile?->sub_specialization ?? 'غير محدد',
+            'profession'           => $professionTitle,
             'request_date'         => $this->created_at?->format('Y-m-d H:i:s') ?? $this->created_at?->toIso8601String(),
             'created_at'           => $this->created_at?->toIso8601String(),
             'status'               => $this->status,
-            'candidate'            => new CompanyRequestResource($this->whenLoaded('candidateProfile')),
             'status_label'         => $statusLabel,
             'notes'                => $this->notes,
+            'candidate'            => new JobSeekerCardResource($this->whenLoaded('candidateProfile')),
         ];
     }
 }
