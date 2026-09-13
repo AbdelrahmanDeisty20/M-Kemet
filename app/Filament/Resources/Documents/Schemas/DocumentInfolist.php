@@ -65,7 +65,8 @@ class DocumentInfolist
                                             ->reactive(),
                                         TextInput::make('rejection_reason')
                                             ->label('سبب الرفض')
-                                            ->visible(fn ($get) => $get('status') === 'rejected'),
+                                            ->visible(fn ($get) => $get('status') === 'rejected')
+                                            ->required(fn ($get) => $get('status') === 'rejected'),
                                     ])
                                     ->action(function ($record, array $data) {
                                         if ($record->candidateProfile) {
@@ -122,7 +123,8 @@ class DocumentInfolist
                                             ->reactive(),
                                         TextInput::make('rejection_reason')
                                             ->label('سبب الرفض')
-                                            ->visible(fn ($get) => $get('status') === 'rejected'),
+                                            ->visible(fn ($get) => $get('status') === 'rejected')
+                                            ->required(fn ($get) => $get('status') === 'rejected'),
                                     ])
                                     ->action(function ($record, array $data) {
                                         if ($record->video) {
@@ -210,7 +212,8 @@ class DocumentInfolist
                                                     ->reactive(),
                                                 TextInput::make('rejection_reason')
                                                     ->label('سبب الرفض')
-                                                    ->visible(fn ($get) => $get('status') === 'rejected'),
+                                                    ->visible(fn ($get) => $get('status') === 'rejected')
+                                                    ->required(fn ($get) => $get('status') === 'rejected'),
                                             ])
                                             ->action(function ($record, array $data) {
                                                 $isApproved = $data['status'] === 'approved';
