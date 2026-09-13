@@ -26,15 +26,14 @@ class CompanyRequestResource extends JsonResource
 
         return [
             'id'                   => $this->id,
-            'candidate_profile_id' => $this->candidate_profile_id,
             'name'                 => $candidateUser?->name ?? 'غير محدد',
             'profession'           => $profession?->title_ar ?? $this->candidateProfile?->sub_specialization ?? 'غير محدد',
             'request_date'         => $this->created_at?->format('Y-m-d H:i:s') ?? $this->created_at?->toIso8601String(),
             'created_at'           => $this->created_at?->toIso8601String(),
             'status'               => $this->status,
+            'candidate'            => new CompanyRequestResource($this->whenLoaded('candidateProfile')),
             'status_label'         => $statusLabel,
             'notes'                => $this->notes,
-            'candidate_photo'      => $candidateUser?->profile_photo_url,
         ];
     }
 }
