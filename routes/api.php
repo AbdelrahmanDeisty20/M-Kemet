@@ -63,6 +63,13 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/company/contact-requests', [ContactRequestController::class, 'companyRequests']);
         Route::get('/candidate/contact-requests', [ContactRequestController::class, 'candidateRequests']);
 
+        // مسارات خاصة بحسابات الشركات (Company / Employer Routes)
+        // middleware('company') يمنع الباحثين عن العمل من الوصول لهذه المسارات
+        Route::get('/my-requests', [ContactRequestController::class, 'companyRequests'])->middleware('company');
+        Route::prefix('company')->middleware('company')->group(function () {
+            Route::get('/my-requests', [ContactRequestController::class, 'companyRequests']);
+        });
+
         // مسارات تكميل ملف الباحث عن عمل (Candidate Profile Completion)
         // middleware('candidate') يمنع الشركات من الوصول لهذه المسارات
         Route::prefix('candidate')->middleware('candidate')->group(function () {

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\ApplicationResource;
+use App\Http\Resources\CompanyRequestResource;
 use App\Models\Application;
 use App\Models\ApplicationStatusHistory;
 use App\Models\User;
@@ -77,7 +78,7 @@ class ContactRequestService
     }
 
     /**
-     * عرض طلبات التواصل المرسلة من الشركة
+     * عرض طلبات التواصل المرسلة من الشركة (المنسقة لـ my-requests مع الريسورس الخاص)
      */
     public function getCompanyRequests(User $companyUser, Request $request): JsonResponse
     {
@@ -94,17 +95,14 @@ class ContactRequestService
         $applications = Application::where('company_id', $company->id)
             ->with([
                 'company',
-                'candidateProfile.user',
-                'candidateProfile.currentCountry',
+                'candidateProfile.user.documents',
                 'candidateProfile.profession',
-                'candidateProfile.targetCountries',
-                'candidateProfile.documents',
             ])
             ->latest()
             ->paginate($perPage);
 
         return $this->paginated(
-            ApplicationResource::class,
+            CompanyRequestResource::class,
             $applications,
             __('messages.operationSuccessful')
         );
