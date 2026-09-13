@@ -16,6 +16,12 @@ class ApplicationsTable
     {
         return $table
             ->columns([
+                TextColumn::make('code')
+                    ->label('كود الطلب')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('warning'),
                 TextColumn::make('company.company_name')
                     ->label('الشركة / مقدم الخدمة')
                     ->searchable()
