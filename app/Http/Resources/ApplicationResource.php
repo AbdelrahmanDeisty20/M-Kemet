@@ -23,6 +23,7 @@ class ApplicationResource extends JsonResource
 
         return [
             'id'                   => $this->id,
+            'code'                 => $this->code,
             'company'              => new CompanyInfoResource($this->whenLoaded('company')),
             'candidate'            => new JobSeekerCardResource($this->whenLoaded('candidateProfile')),
             'status'               => $this->status,

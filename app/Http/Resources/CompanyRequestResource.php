@@ -28,14 +28,13 @@ class CompanyRequestResource extends JsonResource
 
         return [
             'id'                   => $this->id,
+            'code'                 => $this->code,
             'name'                 => $candidateUser?->name ?? 'غير محدد',
             'profession'           => $professionTitle,
             'request_date'         => $this->created_at?->format('Y-m-d H:i:s') ?? $this->created_at?->toIso8601String(),
             'created_at'           => $this->created_at?->toIso8601String(),
             'status'               => $this->status,
             'status_label'         => $statusLabel,
-            'notes'                => $this->notes,
-            'candidate'            => new JobSeekerCardResource($this->whenLoaded('candidateProfile')),
         ];
     }
 }
