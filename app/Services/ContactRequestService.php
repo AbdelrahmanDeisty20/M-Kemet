@@ -45,6 +45,14 @@ class ContactRequestService
 
         $candidateProfile = $candidate->candidateProfile;
 
+        // التحقق من حالة الملف التعريفي للباحث عن عمل (منع طلب التواصل إذا كانت الحالة pending أو rejected)
+        if (in_array($candidateProfile->status, ['pending', 'rejected']) || $candidateProfile->status !== 'approved') {
+            return $this->errorResponse(
+                __('messages.candidateNotApproved') ?? 'لا يمكن إرسال طلب تواصل لهذا الباحث عن العمل لأن حسابه غير معتمد (قيد المراجعة أو مرفوض)',
+                400
+            );
+        }
+
         // Check if contact request already exists
         $existingApp = Application::where('company_id', $company->id)
             ->where('candidate_profile_id', $candidateProfile->id)

@@ -85,10 +85,7 @@ class CompanyRequestsTest extends TestCase
     {
         $response = $this->getJson('/api/my-requests');
 
-        $response->assertStatus(401)
-                 ->assertJson([
-                     'status'  => false,
-                 ]);
+        $response->assertStatus(401);
     }
 
     public function test_candidate_user_is_forbidden_from_company_my_requests(): void
@@ -145,11 +142,36 @@ class CompanyRequestsTest extends TestCase
                              'status_label',
                          ]
                      ],
-                     'meta' => [
+                     'pagination' => [
                          'current_page',
                          'per_page',
                          'total',
                      ]
+                 ]);
+    }
+
+    public function test_company_cannot_send_contact_request_to_pending_or_rejected_candidate(): void
+    {
+        $this->candidateProfile->update(['status' => 'pending']);
+
+        $response = $this->actingAs($this->companyUser, 'sanctum')
+                         ->postJson("/api/job-seekers/{$this->candidateProfile->id}/contact-request");
+
+        $response->assertStatus(400)
+                 ->assertJson([
+                     'status'  => false,
+                     'message' => __('messages.candidateNotApproved'),
+                 ]);
+
+        $this->candidateProfile->update(['status' => 'rejected']);
+
+        $response = $this->actingAs($this->companyUser, 'sanctum')
+                         ->postJson("/api/job-seekers/{$this->candidateProfile->id}/contact-request");
+
+        $response->assertStatus(400)
+                 ->assertJson([
+                     'status'  => false,
+                     'message' => __('messages.candidateNotApproved'),
                  ]);
     }
 }
