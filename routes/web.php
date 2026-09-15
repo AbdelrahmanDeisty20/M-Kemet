@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\MigrationController;
 use App\Models\Document;
 use App\Models\Video;
 use Illuminate\Support\Facades\Route;
@@ -8,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::match(['get', 'post'], '/migrate', [MigrationController::class, 'run']);
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/documents/{document}/file', function (Document $document) {

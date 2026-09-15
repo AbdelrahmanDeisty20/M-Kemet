@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\ContactRequestController;
 use App\Http\Controllers\API\JobSeekerController;
+use App\Http\Controllers\API\MigrationController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\TermController;
+
+Route::match(['get', 'post'], '/migrate', [MigrationController::class, 'run']);
 
 Route::middleware([SetLocale::class])->group(function () {
     // المسارات العامة (Public Routes)
