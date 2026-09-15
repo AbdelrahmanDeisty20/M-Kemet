@@ -49,6 +49,18 @@ return [
     'search_keyword_required'       => 'Search keyword is required (e.g., name, profession, or skill)',
     'filter_option_required'        => 'At least one filter criterion is required (e.g., country, profession, gender, or passport status)',
 
+    // Notification Strings
+    'fcm_token_stored_successfully'        => 'FCM token stored successfully',
+    'notification_status'                  => 'Notification status retrieved successfully',
+    'notification_turned_on'               => 'Notifications turned on successfully',
+    'notification_turned_off'              => 'Notifications turned off successfully',
+    'notifications_retrieved_successfully' => 'Notifications retrieved successfully',
+    'notification_not_found'               => 'Notification not found',
+    'notification_read_successfully'       => 'Notification marked as read successfully',
+    'notifications_read_successfully'      => 'All notifications marked as read successfully',
+    'notification_deleted_successfully'    => 'Notification deleted successfully',
+    'notifications_deleted_successfully'   => 'All notifications deleted successfully',
+
     // Mail Strings
     'otp_mail_subject'         => 'Your Verification Code - M-Kemet Platform',
     'otp_mail_welcome'         => 'Hello :name,',

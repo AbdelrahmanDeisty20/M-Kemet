@@ -49,6 +49,18 @@ return [
     'search_keyword_required'       => 'مفتاح البحث مطلوب (مثل الاسم، المهنة، أو المهارة)',
     'filter_option_required'        => 'يجب اختيار عنصر فلترة واحد على الأقل (مثل الدولة، المهنة، الجنس، أو حالة جواز السفر)',
 
+    // Notification Strings
+    'fcm_token_stored_successfully'        => 'تم حفظ رمز التنبيهات (FCM Token) بنجاح',
+    'notification_status'                  => 'تم جلب حالة الإشعارات بنجاح',
+    'notification_turned_on'               => 'تم تفعيل الإشعارات بنجاح',
+    'notification_turned_off'              => 'تم تعطيل الإشعارات بنجاح',
+    'notifications_retrieved_successfully' => 'تم جلب الإشعارات بنجاح',
+    'notification_not_found'               => 'الإشعار غير موجود',
+    'notification_read_successfully'       => 'تم قراءة الإشعار بنجاح',
+    'notifications_read_successfully'      => 'تم تحديد جميع الإشعارات كمقروءة بنجاح',
+    'notification_deleted_successfully'    => 'تم حذف الإشعار بنجاح',
+    'notifications_deleted_successfully'   => 'تم حذف جميع الإشعارات بنجاح',
+
     // Mail Strings
     'otp_mail_subject'         => 'رمز التحقق الخاص بك - منصة أم كميت (M-Kemet)',
     'otp_mail_welcome'         => 'مرحباً :name،',

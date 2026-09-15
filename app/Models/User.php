@@ -23,6 +23,7 @@ class User extends Authenticatable
         'country_id',
         'user_type',
         'status',
+        'is_notify',
         'otp_code',
         'password',
     ];
@@ -38,6 +39,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
+            'is_notify'         => 'boolean',
         ];
     }
 
@@ -89,6 +91,16 @@ class User extends Authenticatable
     public function refreshTokens(): HasMany
     {
         return $this->hasMany(RefreshToken::class);
+    }
+
+    public function fcmTokens(): HasMany
+    {
+        return $this->hasMany(UserFcmToken::class);
+    }
+
+    public function appNotifications(): HasMany
+    {
+        return $this->hasMany(AppNotification::class);
     }
 
     public function bookmarks(): HasMany

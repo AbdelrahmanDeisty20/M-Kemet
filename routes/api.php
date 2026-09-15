@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\ContactRequestController;
 use App\Http\Controllers\API\JobSeekerController;
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\TermController;
 
 Route::middleware([SetLocale::class])->group(function () {
@@ -51,12 +52,27 @@ Route::middleware([SetLocale::class])->group(function () {
     Route::post('/verify-reset-otp', [PasswordResetController::class, 'verifyResetOtp']);
     Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 
+    // FCM Token Route
+    Route::post('/fcm-token', [NotificationController::class, 'sendToken']);
+
     // المسارات المحمية بـ Sanctum (Protected Routes)
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/profile', [AuthController::class, 'profile']);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/logout-all', [AuthController::class, 'logoutAllDevices']);
         Route::delete('/delete-account', [AuthController::class, 'deleteAccount']);
+
+        // مسارات الإشعارات (Notifications)
+        Route::get('/notification/status', [NotificationController::class, 'NotificationStatus']);
+        Route::post('/notification/turn-on', [NotificationController::class, 'TurnOnNotification']);
+        Route::post('/notification/turn-off', [NotificationController::class, 'TurnOffNotification']);
+        Route::get('/notifications', [NotificationController::class, 'notifications']);
+        Route::get('/notifications/{id}/read', [NotificationController::class, 'readNotification']);
+        Route::get('/notifications/read-all', [NotificationController::class, 'readAllNotifications']);
+        Route::delete('/notifications/delete-all', [NotificationController::class, 'deleteAllNotifications']);
+        Route::delete('/notifications/{id}', [NotificationController::class, 'deleteNotification']);
+        Route::post('/fcm-token-user', [NotificationController::class, 'sendToken']);
+        Route::post('/sendTestNotification', [NotificationController::class, 'sendTestNotificationToUser']);
 
         // مسارات حفظ الباحثين عن العمل في المفضلة (Bookmarks)
         Route::get('/bookmarks', [JobSeekerController::class, 'bookmarkedList']);
