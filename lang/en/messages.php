@@ -26,7 +26,7 @@ return [
     'userSuspended'                  => 'This account is suspended. Please contact technical support.',
     'userPendingVerification'        => 'Account is not activated yet. Please verify your account using the OTP code first.',
     'otpResentSuccessfully'          => 'Verification code resent successfully',
-    'otp_wait_resend'                => 'Please wait one minute before requesting a new code',
+    'otp_wait_resend'                => 'Please wait two minutes before requesting a new code',
     'userAlreadyActive'              => 'This email address is already verified',
     'profileSuccessFully'            => 'Profile data retrieved successfully',
     'profileNotFound'                => 'Profile not found',

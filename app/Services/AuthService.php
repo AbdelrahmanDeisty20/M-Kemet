@@ -184,7 +184,7 @@ class AuthService
             ->latest()
             ->first();
 
-        if ($latestOtp && $latestOtp->created_at->addMinute() > now()) {
+        if ($latestOtp && $latestOtp->created_at->addMinutes(2) > now()) {
             return $this->errorResponse(__('messages.otp_wait_resend'), 429);
         }
 

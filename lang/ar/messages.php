@@ -26,7 +26,7 @@ return [
     'userSuspended'                  => 'هذا الحساب معطل، يرجى التواصل مع الدعم الفني',
     'userPendingVerification'        => 'الحساب غير مفعل، يرجى تفعيل الحساب عبر رمز OTP أولاً',
     'otpResentSuccessfully'          => 'تم إعادة إرسال رمز التحقق بنجاح',
-    'otp_wait_resend'                => 'يرجى الانتظار دقيقة واحدة قبل طلب رمز جديد',
+    'otp_wait_resend'                => 'يرجى الانتظار دقيقتين قبل طلب رمز جديد',
     'userAlreadyActive'              => 'هذا البريد الإلكتروني مفعل بالفعل',
     'profileSuccessFully'            => 'تم جلب بيانات البروفايل بنجاح',
     'profileNotFound'                => 'لم يتم العثور على الملف الشخصي',

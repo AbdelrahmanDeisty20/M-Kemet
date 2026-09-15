@@ -25,6 +25,15 @@ class PasswordResetService
             return $this->notFoundResponse(__('messages.user_not_found'));
         }
 
+        $latestOtp = Otp::where('email', $email)
+            ->where('type', 'reset_password')
+            ->latest()
+            ->first();
+
+        if ($latestOtp && $latestOtp->created_at->addMinutes(2) > now()) {
+            return $this->errorResponse(__('messages.otp_wait_resend'), 429);
+        }
+
         // مسح الرموز القديمة لنفس الغرض
         Otp::where('email', $email)->where('type', 'reset_password')->delete();
 
