@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\ContactRequestController;
 use App\Http\Controllers\API\JobSeekerController;
+use App\Http\Controllers\API\TermController;
 
 Route::middleware([SetLocale::class])->group(function () {
     // المسارات العامة (Public Routes)
@@ -28,6 +29,9 @@ Route::middleware([SetLocale::class])->group(function () {
 
     Route::get('/experience-levels', [ExperienceLevelController::class, 'index']);
     Route::get('/qualifications', [QualificationController::class, 'index']);
+
+    Route::get('/terms', [TermController::class, 'index']);
+    Route::get('/terms/{id}', [TermController::class, 'show']);
 
     Route::get('/job-seekers', [JobSeekerController::class, 'index']);
     Route::get('/job-seekers/search', [JobSeekerController::class, 'search']);

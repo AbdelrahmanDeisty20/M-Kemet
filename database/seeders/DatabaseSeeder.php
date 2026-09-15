@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             ExperienceLevelSeeder::class,
             QualificationSeeder::class,
             CandidateSeeder::class,
+            TermSeeder::class,
         ]);
     }
 }
