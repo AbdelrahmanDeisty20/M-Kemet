@@ -112,8 +112,9 @@ class CandidateProfileService
         }
 
         // لو الـ profile كان مرفوضاً، أعد حالته لـ pending عشان الأدمن يراجعه تاني
-        if ($user->candidateProfile && $user->candidateProfile->status === 'rejected') {
-            $user->candidateProfile->update([
+        $profile = $user->candidateProfile()->first(); // fresh query — no cache
+        if ($profile && $profile->status === 'rejected') {
+            $profile->update([
                 'status'           => 'pending',
                 'rejection_reason' => null,
             ]);
