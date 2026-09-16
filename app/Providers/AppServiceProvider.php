@@ -33,5 +33,10 @@ class AppServiceProvider extends ServiceProvider
                     'en' => 'English (EN)',
                 ]);
         });
+
+        // Register Model Observers for status changes and automatic notifications
+        \App\Models\UserProfile::observe(\App\Observers\UserProfileObserver::class);
+        \App\Models\Document::observe(\App\Observers\DocumentObserver::class);
+        \App\Models\Video::observe(\App\Observers\VideoObserver::class);
     }
 }
