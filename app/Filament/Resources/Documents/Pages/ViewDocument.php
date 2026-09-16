@@ -9,7 +9,10 @@ use App\Models\Video;
 use App\Services\NotificationService;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -226,6 +229,161 @@ class ViewDocument extends ViewRecord
                         ->send();
 
                     // Redirect to view route to force immediate UI refresh on first click
+                    return redirect(DocumentResource::getUrl('view', ['record' => $user->id]));
+                }),
+
+            Action::make('reject_partial')
+                ->label('رفض بعض المستندات فقط')
+                ->icon('heroicon-o-exclamation-triangle')
+                ->color('warning')
+                ->modalHeading('رفض مستندات محددة')
+                ->modalDescription('اختر المستندات والملفات التي تريد رفضها فقط — باقي المستندات ستظل على حالها. سيتم رفض حالة الباحث ليتمكن من إعادة الرفع.')
+                ->form(function (): array {
+                    $user = $this->getRecord();
+                    $fields = [];
+
+                    $docTypes = [
+                        'cv'             => 'السيرة الذاتية (CV)',
+                        'national_id'    => 'الهوية الوطنية',
+                        'passport'       => 'جواز السفر',
+                        'personal_photo' => 'صورة شخصية',
+                    ];
+
+                    // حقول رفض كل مستند على حدة — فقط المستندات المقبولة أو التي لا تزال قيد المراجعة
+                    foreach ($user->documents as $doc) {
+                        $typeLabel = $docTypes[$doc->document_type] ?? $doc->document_type;
+                        $statusBadge = $doc->is_approved ? '✅ مقبول' : '⏳ قيد المراجعة';
+
+                        $fields[] = Section::make("{$typeLabel} — {$statusBadge}")
+                            ->schema([
+                                Toggle::make("reject_doc_{$doc->id}")
+                                    ->label("رفض هذا المستند")
+                                    ->default(false)
+                                    ->live(),
+                                Textarea::make("doc_reason_{$doc->id}")
+                                    ->label("سبب الرفض")
+                                    ->placeholder("أدخل سبب رفض {$typeLabel}...")
+                                    ->rows(2)
+                                    ->required(fn (Get $get) => $get("reject_doc_{$doc->id}"))
+                                    ->visible(fn (Get $get) => $get("reject_doc_{$doc->id}")),
+                            ])
+                            ->compact();
+                    }
+
+                    // الفيديو التعريفي
+                    if ($user->video) {
+                        $videoStatus = $user->video->status === 'approved' ? '✅ مقبول' : '⏳ قيد المراجعة';
+                        $fields[] = Section::make("الفيديو التعريفي 🎥 — {$videoStatus}")
+                            ->schema([
+                                Toggle::make('reject_video')
+                                    ->label('رفض الفيديو التعريفي')
+                                    ->default(false)
+                                    ->live(),
+                                Textarea::make('video_reason')
+                                    ->label('سبب رفض الفيديو')
+                                    ->placeholder('أدخل سبب رفض الفيديو التعريفي...')
+                                    ->rows(2)
+                                    ->required(fn (Get $get) => $get('reject_video'))
+                                    ->visible(fn (Get $get) => $get('reject_video')),
+                            ])
+                            ->compact();
+                    }
+
+                    // سبب رفض الملف الشخصي (إجباري دائماً لأن حالة الباحث ستتغير)
+                    $fields[] = Section::make('سبب رفض الملف الشخصي (إجباري)')
+                        ->description('سيتم تحديث حالة الباحث إلى "مرفوض" ليتمكن من إعادة رفع المستندات المرفوضة.')
+                        ->schema([
+                            Textarea::make('candidate_profile_reason')
+                                ->label('سبب رفض الملف الشخصي')
+                                ->placeholder('مثال: بعض مستنداتك تحتاج إعادة رفع...')
+                                ->rows(2)
+                                ->required(),
+                        ])
+                        ->compact();
+
+                    return $fields;
+                })
+                ->action(function (array $data) {
+                    $user = $this->getRecord();
+                    $docTypes = [
+                        'cv'             => 'السيرة الذاتية (CV)',
+                        'national_id'    => 'الهوية الوطنية',
+                        'passport'       => 'جواز السفر',
+                        'personal_photo' => 'صورة شخصية',
+                    ];
+
+                    $rejectionsAr = [];
+                    $rejectionsEn = [];
+                    $anyRejection = false;
+
+                    // 1. رفض المستندات المحددة فقط — الباقي لا يتغير
+                    Document::withoutEvents(function () use ($user, $data, $docTypes, &$rejectionsAr, &$rejectionsEn, &$anyRejection) {
+                        foreach ($user->documents as $doc) {
+                            if (!empty($data["reject_doc_{$doc->id}"])) {
+                                $reason = trim($data["doc_reason_{$doc->id}"] ?? 'تم رفض المستند');
+                                $typeLabel = $docTypes[$doc->document_type] ?? $doc->document_type;
+
+                                $doc->update([
+                                    'is_approved'      => false,
+                                    'rejection_reason' => $reason,
+                                ]);
+
+                                $rejectionsAr[] = "📌 مستند ({$typeLabel}):\n-السبب: {$reason}";
+                                $rejectionsEn[] = "📌 Document ({$typeLabel}):\n-Reason: {$reason}";
+                                $anyRejection = true;
+                            }
+                        }
+                    });
+
+                    // 2. رفض الفيديو إن تم تحديده
+                    if ($user->video && !empty($data['reject_video'])) {
+                        Video::withoutEvents(function () use ($user, $data, &$rejectionsAr, &$rejectionsEn, &$anyRejection) {
+                            $videoReason = trim($data['video_reason'] ?? 'تم رفض الفيديو');
+                            $user->video->update([
+                                'status'           => 'rejected',
+                                'rejection_reason' => $videoReason,
+                            ]);
+                            $rejectionsAr[] = "📌 الفيديو التعريفي:\n-السبب: {$videoReason}";
+                            $rejectionsEn[] = "📌 Intro Video:\n-Reason: {$videoReason}";
+                            $anyRejection = true;
+                        });
+                    }
+
+                    // 3. رفض الملف الشخصي دائماً (عشان الباحث يعرف يعيد الرفع)
+                    if ($user->candidateProfile) {
+                        $profileReason = trim($data['candidate_profile_reason'] ?? 'بعض مستنداتك تحتاج مراجعة');
+                        UserProfile::withoutEvents(function () use ($user, $profileReason) {
+                            $user->candidateProfile->update([
+                                'status'           => 'rejected',
+                                'rejection_reason' => $profileReason,
+                            ]);
+                        });
+                        $rejectionsAr[] = "📌 الملف الشخصي:\n-السبب: {$profileReason}";
+                        $rejectionsEn[] = "📌 Candidate Profile:\n-Reason: {$profileReason}";
+                    }
+
+                    // 4. إرسال إشعار موحد بالمستندات المرفوضة فقط
+                    /** @var NotificationService $notificationService */
+                    $notificationService = app(NotificationService::class);
+
+                    $fullMsgAr = "تم مراجعة مستنداتك وتحديث بعضها كالتالي:\n\n" . implode("\n\n", $rejectionsAr);
+                    $fullMsgEn = "Some of your documents have been reviewed with the following updates:\n\n" . implode("\n\n", $rejectionsEn);
+
+                    $notificationService->sendAppNotification(
+                        $user->id,
+                        'تحديث حالة بعض المستندات',
+                        'Partial Documents Status Update',
+                        $fullMsgAr,
+                        $fullMsgEn,
+                        'documents_partial_rejection',
+                        ['user_id' => $user->id, 'status' => 'rejected']
+                    );
+
+                    Notification::make()
+                        ->title('تم رفض المستندات المحددة وإرسال الإشعار للمرشح بنجاح')
+                        ->warning()
+                        ->send();
+
                     return redirect(DocumentResource::getUrl('view', ['record' => $user->id]));
                 }),
 
