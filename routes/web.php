@@ -10,7 +10,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::match(['get', 'post'], '/migrate', [MigrationController::class, 'run']);
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/documents/{document}/file', function (Document $document) {

@@ -154,6 +154,49 @@ class NotificationService
         return $notification;
     }
 
+    /**
+     * Send a general AppNotification record & Push Notification to ALL users/guests.
+     */
+    public function sendBroadcastNotification(
+        string $titleAr,
+        string $titleEn,
+        string $messageAr,
+        string $messageEn,
+        string $type = 'general',
+        array $data = []
+    ): AppNotification {
+        $notification = AppNotification::create([
+            'user_id'    => null,
+            'title_ar'   => $titleAr,
+            'title_en'   => $titleEn,
+            'message_ar' => $messageAr,
+            'message_en' => $messageEn,
+            'type'       => $type,
+            'data'       => $data,
+            'is_read'    => false,
+        ]);
+
+        $tokens = UserFcmToken::with('user')->get();
+        foreach ($tokens as $tokenModel) {
+            $user = $tokenModel->user;
+            if ($user && !$user->is_notify) {
+                continue;
+            }
+
+            $locale = ($user && $user->locale) ? $user->locale : 'ar';
+            $title  = $locale === 'en' ? $titleEn : $titleAr;
+            $body   = $locale === 'en' ? $messageEn : $messageAr;
+
+            try {
+                $this->firebaseService->sendToToken($tokenModel->token, $title, $body, $data);
+            } catch (\Exception $e) {
+                // Ignore individual token error
+            }
+        }
+
+        return $notification;
+    }
+
     public function notifications(): JsonResponse
     {
         $user = auth()->user();
@@ -161,7 +204,10 @@ class NotificationService
             return $this->errorResponse(__('messages.user_not_found'), 401);
         }
 
-        $notifications = AppNotification::where('user_id', $user->id)
+        $notifications = AppNotification::where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                      ->orWhereNull('user_id');
+            })
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
@@ -179,7 +225,10 @@ class NotificationService
             return $this->errorResponse(__('messages.user_not_found'), 401);
         }
 
-        $notification = AppNotification::where('user_id', $user->id)
+        $notification = AppNotification::where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                      ->orWhereNull('user_id');
+            })
             ->where('id', $id)
             ->first();
 
@@ -202,7 +251,10 @@ class NotificationService
             return $this->errorResponse(__('messages.user_not_found'), 401);
         }
 
-        AppNotification::where('user_id', $user->id)
+        AppNotification::where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                      ->orWhereNull('user_id');
+            })
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
@@ -219,7 +271,10 @@ class NotificationService
             return $this->errorResponse(__('messages.user_not_found'), 401);
         }
 
-        $notification = AppNotification::where('user_id', $user->id)
+        $notification = AppNotification::where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                      ->orWhereNull('user_id');
+            })
             ->where('id', $id)
             ->first();
 

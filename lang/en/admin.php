@@ -26,6 +26,15 @@ return [
     'application'           => 'Contact Request',
     'bookmarks'             => 'Bookmarks & Saved',
     'bookmark'              => 'Bookmarked Item',
+    'app_notifications'     => 'Notifications Management',
+    'app_notification'      => 'App Notification',
+    'target_user'           => 'Target User',
+    'title_ar'              => 'Title (Arabic)',
+    'title_en'              => 'Title (English)',
+    'message_ar'            => 'Message (Arabic)',
+    'message_en'            => 'Message (English)',
+    'notification_type'     => 'Notification Type',
+    'is_read'               => 'Is Read',
 
     // User types & statuses
     'type_admin'            => 'System Admin',

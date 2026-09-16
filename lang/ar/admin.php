@@ -26,6 +26,15 @@ return [
     'application'           => 'طلب تواصل',
     'bookmarks'             => 'المفضلة والمحفوظات',
     'bookmark'              => 'عنصر محفوظ',
+    'app_notifications'     => 'إدارة التنبيهات والإشعارات',
+    'app_notification'      => 'إشعار',
+    'target_user'           => 'المستخدم المستهدف',
+    'title_ar'              => 'عنوان الإشعار (عربي)',
+    'title_en'              => 'عنوان الإشعار (إنجليزي)',
+    'message_ar'            => 'نص الرسالة (عربي)',
+    'message_en'            => 'نص الرسالة (إنجليزي)',
+    'notification_type'     => 'نوع الإشعار',
+    'is_read'               => 'تمت القراءة',
 
     // User types & statuses
     'type_admin'            => 'مدير النظام',
