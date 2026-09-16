@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Candidate;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Candidate\UpdateCandidateProfileRequest;
+use App\Http\Requests\API\Candidate\UpdateDocumentRequest;
 use App\Http\Requests\API\Candidate\UploadDocumentRequest;
 use App\Http\Requests\API\Candidate\UploadVideoRequest;
 use App\Services\CandidateProfileService;
@@ -49,6 +50,19 @@ class CandidateProfileController extends Controller
     }
 
     /**
+     * Update (replace) an existing specific document by its ID.
+     * Automatically resets UserProfile status back to 'pending' to trigger re-review.
+     */
+    public function updateDocument(UpdateDocumentRequest $request, int $documentId): JsonResponse
+    {
+        return $this->candidateProfileService->updateDocument(
+            Auth::user(),
+            $documentId,
+            $request->file('file')
+        );
+    }
+
+    /**
      * Upload candidate intro video
      */
     public function uploadVideo(UploadVideoRequest $request): JsonResponse
@@ -61,3 +75,4 @@ class CandidateProfileController extends Controller
         );
     }
 }
+
