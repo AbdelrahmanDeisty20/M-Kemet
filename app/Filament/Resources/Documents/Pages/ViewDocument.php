@@ -87,7 +87,7 @@ class ViewDocument extends ViewRecord
                 ->icon('heroicon-o-x-circle')
                 ->color('danger')
                 ->modalHeading('تحديد أسباب الرفض للمستندات والملف الشخصي')
-                ->modalDescription('أسباب الرفض السابقة مسجلة ومملوءة تلقائياً. يمكنك مراجعتها أو تعديلها أو إضافة أسباب جديدة.')
+                ->modalDescription('يظهر أدناه فقط المستندات والملفات التي ليس لها سبب رفض مسجل بعد لتحديد أسباب الرفض لها.')
                 ->form(function (): array {
                     $user = $this->getRecord();
                     $fields = [];
@@ -99,35 +99,43 @@ class ViewDocument extends ViewRecord
                         'personal_photo' => 'صورة شخصية',
                     ];
 
-                    // 1. سبب رفض ملف الباحث عن العمل (مسبق الملء بالسبب السابق إن وجد)
-                    if ($user->candidateProfile) {
+                    // 1. سبب رفض ملف الباحث عن العمل (فقط إذا لم يكن له سبب مسجل من قبل)
+                    if ($user->candidateProfile && empty($user->candidateProfile->rejection_reason)) {
                         $fields[] = Textarea::make('candidate_profile_reason')
                             ->label('سبب رفض ملف الباحث عن العمل')
-                            ->placeholder('أدخل سبب رفض الملف الشخصي (اتركه فارغاً إن كان مقبولاً)...')
-                            ->default($user->candidateProfile->rejection_reason)
+                            ->placeholder('أدخل سبب رفض الملف الشخصي...')
                             ->rows(2)
-                            ->nullable();
+                            ->required();
                     }
 
-                    // 2. سبب رفض الفيديو التعريفي (مسبق الملء بالسبب السابق إن وجد)
-                    if ($user->video) {
+                    // 2. سبب رفض الفيديو التعريفي (فقط إذا لم يكن له سبب مسجل من قبل)
+                    if ($user->video && empty($user->video->rejection_reason)) {
                         $fields[] = Textarea::make('video_reason')
                             ->label('سبب رفض الفيديو التعريفي 🎥')
-                            ->placeholder('أدخل سبب رفض الفيديو التعريفي (اتركه فارغاً إن كان مقبولاً)...')
-                            ->default($user->video->rejection_reason)
+                            ->placeholder('أدخل سبب رفض الفيديو التعريفي...')
                             ->rows(2)
-                            ->nullable();
+                            ->required();
                     }
 
-                    // 3. أسباب رفض كافة المستندات المرفوعة (مسبقة الملء بأسبابها السابقة)
+                    // 3. أسباب رفض المستندات المرفوعة (فقط للمستندات التي ليس لها سبب مسجل بعد)
                     foreach ($user->documents as $doc) {
-                        $typeLabel = $docTypes[$doc->document_type] ?? $doc->document_type;
-                        $fields[] = Textarea::make("doc_reason_{$doc->id}")
-                            ->label("سبب رفض مستند: {$typeLabel}")
-                            ->placeholder("أدخل سبب رفض {$typeLabel} (اتركه فارغاً إن كان مقبولاً)...")
-                            ->default($doc->rejection_reason)
-                            ->rows(2)
-                            ->nullable();
+                        if (empty($doc->rejection_reason)) {
+                            $typeLabel = $docTypes[$doc->document_type] ?? $doc->document_type;
+                            $fields[] = Textarea::make("doc_reason_{$doc->id}")
+                                ->label("سبب رفض مستند: {$typeLabel}")
+                                ->placeholder("أدخل سبب رفض {$typeLabel}...")
+                                ->rows(2)
+                                ->required();
+                        }
+                    }
+
+                    // إذا كانت كافة المستندات وملف المرشح تمتلك أسباب رفض مسجلة بالفعل
+                    if (empty($fields)) {
+                        $fields[] = Textarea::make('already_have_reasons_notice')
+                            ->label('ملاحظة')
+                            ->default('جميع المستندات وملف الباحث عن العمل تمتلك أسباب رفض مسجلة بالفعل. سيتم تأكيد رفض الجميع وإرسال الإشعار الموحد.')
+                            ->disabled()
+                            ->rows(2);
                     }
 
                     return $fields;
@@ -144,98 +152,73 @@ class ViewDocument extends ViewRecord
                     $rejectionsAr = [];
                     $rejectionsEn = [];
 
-                    // 1. تحديث المستندات دون إطلاق إشعارات مفردة
+                    // 1. تحديث المستندات: الاحتفاظ بالسبب القديم للمستندات المرفوضة سابقاً وتطبيق السبب الجديد للمستندات المرفوضة حالياً
                     Document::withoutEvents(function () use ($user, $data, $docTypes, &$rejectionsAr, &$rejectionsEn) {
                         foreach ($user->documents as $doc) {
                             $reasonKey = "doc_reason_{$doc->id}";
-                            $reason = !empty($data[$reasonKey]) ? trim($data[$reasonKey]) : null;
+                            $reason = !empty($data[$reasonKey]) 
+                                ? trim($data[$reasonKey]) 
+                                : (!empty($doc->rejection_reason) ? $doc->rejection_reason : 'تم رفض المستند');
+
                             $typeLabel = $docTypes[$doc->document_type] ?? $doc->document_type;
 
-                            if (!empty($reason)) {
-                                $doc->update([
-                                    'is_approved'      => false,
-                                    'rejection_reason' => $reason,
-                                ]);
-                                $rejectionsAr[] = "📌 مستند ({$typeLabel}):\n-السبب: {$reason}";
-                                $rejectionsEn[] = "📌 Document ({$typeLabel}):\n-Reason: {$reason}";
-                            } else {
-                                $doc->update([
-                                    'is_approved'      => true,
-                                    'rejection_reason' => null,
-                                ]);
-                            }
+                            $doc->update([
+                                'is_approved'      => false,
+                                'rejection_reason' => $reason,
+                            ]);
+                            $rejectionsAr[] = "📌 مستند ({$typeLabel}):\n-السبب: {$reason}";
+                            $rejectionsEn[] = "📌 Document ({$typeLabel}):\n-Reason: {$reason}";
                         }
                     });
 
                     // 2. تحديث حالة الفيديو التعريفي
                     if ($user->video) {
                         Video::withoutEvents(function () use ($user, $data, &$rejectionsAr, &$rejectionsEn) {
-                            $videoReason = !empty($data['video_reason']) ? trim($data['video_reason']) : null;
-                            if (!empty($videoReason)) {
-                                $user->video->update([
-                                    'status'           => 'rejected',
-                                    'rejection_reason' => $videoReason,
-                                ]);
-                                $rejectionsAr[] = "📌 الفيديو التعريفي:\n-السبب: {$videoReason}";
-                                $rejectionsEn[] = "📌 Intro Video:\n-Reason: {$videoReason}";
-                            } else {
-                                $user->video->update([
-                                    'status'           => 'approved',
-                                    'rejection_reason' => null,
-                                ]);
-                            }
+                            $videoReason = !empty($data['video_reason']) 
+                                ? trim($data['video_reason']) 
+                                : (!empty($user->video->rejection_reason) ? $user->video->rejection_reason : 'تم رفض الفيديو');
+
+                            $user->video->update([
+                                'status'           => 'rejected',
+                                'rejection_reason' => $videoReason,
+                            ]);
+                            $rejectionsAr[] = "📌 الفيديو التعريفي:\n-السبب: {$videoReason}";
+                            $rejectionsEn[] = "📌 Intro Video:\n-Reason: {$videoReason}";
                         });
                     }
 
                     // 3. تحديث حالة ملف الباحث عن العمل
                     if ($user->candidateProfile) {
                         UserProfile::withoutEvents(function () use ($user, $data, &$rejectionsAr, &$rejectionsEn) {
-                            $profileReason = !empty($data['candidate_profile_reason']) ? trim($data['candidate_profile_reason']) : null;
-                            if (!empty($profileReason)) {
-                                $user->candidateProfile->update([
-                                    'status'           => 'rejected',
-                                    'rejection_reason' => $profileReason,
-                                ]);
-                                $rejectionsAr[] = "📌 الملف الشخصي:\n-السبب: {$profileReason}";
-                                $rejectionsEn[] = "📌 Candidate Profile:\n-Reason: {$profileReason}";
-                            } else {
-                                $user->candidateProfile->update([
-                                    'status'           => 'approved',
-                                    'rejection_reason' => null,
-                                ]);
-                            }
+                            $profileReason = !empty($data['candidate_profile_reason']) 
+                                ? trim($data['candidate_profile_reason']) 
+                                : (!empty($user->candidateProfile->rejection_reason) ? $user->candidateProfile->rejection_reason : 'تم رفض الملف الشخصي');
+
+                            $user->candidateProfile->update([
+                                'status'           => 'rejected',
+                                'rejection_reason' => $profileReason,
+                            ]);
+                            $rejectionsAr[] = "📌 الملف الشخصي:\n-السبب: {$profileReason}";
+                            $rejectionsEn[] = "📌 Candidate Profile:\n-Reason: {$profileReason}";
                         });
                     }
 
-                    // 4. إرسال إشعار موحد واحد شامل لكافة تفاصيل وأسباب الرفض
+                    // 4. إرسال إشعار موحد واحد شامل لكافة أسباب الرفض (القديمة والجديدة)
                     /** @var NotificationService $notificationService */
                     $notificationService = app(NotificationService::class);
 
-                    if (!empty($rejectionsAr)) {
-                        $fullMsgAr = "تم مراجعة مستنداتك وحسابك وتحديث حالتها كالتالي:\n\n" . implode("\n\n", $rejectionsAr);
-                        $fullMsgEn = "Your documents and profile have been reviewed with the following updates:\n\n" . implode("\n\n", $rejectionsEn);
+                    $fullMsgAr = "تم مراجعة مستنداتك وحسابك وتحديث حالتها كالتالي:\n\n" . implode("\n\n", $rejectionsAr);
+                    $fullMsgEn = "Your documents and profile have been reviewed with the following updates:\n\n" . implode("\n\n", $rejectionsEn);
 
-                        $notificationService->sendAppNotification(
-                            $user->id,
-                            'تحديث حالة المستندات والملف الشخصي',
-                            'Documents & Profile Status Update',
-                            $fullMsgAr,
-                            $fullMsgEn,
-                            'documents_bulk_rejection',
-                            ['user_id' => $user->id, 'status' => 'rejected']
-                        );
-                    } else {
-                        // إذا تم مسح كافة الأسباب تصبح جميع الحالات مقبولة بالإجماع
-                        $notificationService->sendAppNotification(
-                            $user->id,
-                            'تم اعتماد كافة المستندات والملف الشخصي',
-                            'All Documents & Profile Approved',
-                            'تهانينا! تم مراجعة واعتـماد كافة مستنداتك وملفك الشخصي بنجاح.',
-                            'Congratulations! All your documents and profile have been approved.',
-                            'documents_bulk_approval',
-                            ['user_id' => $user->id, 'status' => 'approved']
-                        );
-                    }
+                    $notificationService->sendAppNotification(
+                        $user->id,
+                        'تحديث حالة المستندات والملف الشخصي',
+                        'Documents & Profile Status Update',
+                        $fullMsgAr,
+                        $fullMsgEn,
+                        'documents_bulk_rejection',
+                        ['user_id' => $user->id, 'status' => 'rejected']
+                    );
 
                     Notification::make()
                         ->title('تم تطبيق أسباب الرفض وإرسال الإشعار الموحد للمرشح بنجاح')
