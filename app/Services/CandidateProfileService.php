@@ -95,9 +95,9 @@ class CandidateProfileService
         if ($existingDoc) {
             Storage::disk($existingDoc->disk ?? 'private')->delete($existingDoc->file_path);
             $existingDoc->update([
-                'file_path'   => $path,
-                'disk'        => $disk,
-                'is_approved' => false,
+                'file_path'        => $path,
+                'disk'             => $disk,
+                'is_approved'      => false,
                 'rejection_reason' => null,
             ]);
             $document = $existingDoc;
@@ -111,49 +111,8 @@ class CandidateProfileService
             ]);
         }
 
-        return $this->successResponse([
-            'document' => [
-                'id'            => $document->id,
-                'document_type' => $document->document_type,
-                'url'           => $document->secure_url,
-                'file_path'     => $document->file_path,
-            ],
-        ], __('messages.documentUploadedSuccessfully'));
-    }
-
-    /**
-     * Update an existing specific document by ID (replace file).
-     * Automatically resets UserProfile status to 'pending' for re-review.
-     */
-    public function updateDocument(User $user, int $documentId, UploadedFile $file): JsonResponse
-    {
-        $document = Document::where('user_id', $user->id)
-            ->where('id', $documentId)
-            ->first();
-
-        if (!$document) {
-            return $this->notFoundResponse(__('messages.notFound'));
-        }
-
-        $disk   = ($document->document_type === 'personal_photo') ? 'public' : 'private';
-        $folder = 'documents/' . $document->document_type . 's';
-
-        // Delete old file
-        Storage::disk($document->disk ?? 'private')->delete($document->file_path);
-
-        // Store new file
-        $path = $file->store($folder, $disk);
-
-        // Update document record, reset approval status
-        $document->update([
-            'file_path'        => $path,
-            'disk'             => $disk,
-            'is_approved'      => false,
-            'rejection_reason' => null,
-        ]);
-
-        // Reset UserProfile status to 'pending' for re-review
-        if ($user->candidateProfile) {
+        // لو الـ profile كان مرفوضاً، أعد حالته لـ pending عشان الأدمن يراجعه تاني
+        if ($user->candidateProfile && $user->candidateProfile->status === 'rejected') {
             $user->candidateProfile->update([
                 'status'           => 'pending',
                 'rejection_reason' => null,
@@ -166,9 +125,7 @@ class CandidateProfileService
                 'document_type' => $document->document_type,
                 'url'           => $document->secure_url,
                 'file_path'     => $document->file_path,
-                'is_approved'   => $document->is_approved,
             ],
-            'profile_status' => $user->candidateProfile?->status,
         ], __('messages.documentUploadedSuccessfully'));
     }
 

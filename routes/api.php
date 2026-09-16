@@ -99,7 +99,6 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::get('/my-document', [CandidateProfileController::class, 'show']);
             Route::put('/update-document', [CandidateProfileController::class, 'update']);
             Route::post('/documents', [CandidateProfileController::class, 'uploadDocument']);
-            Route::post('/documents/{documentId}', [CandidateProfileController::class, 'updateDocument']);
             Route::post('/video', [CandidateProfileController::class, 'uploadVideo']);
             Route::get('/documents/{document}/file', [DocumentController::class, 'viewFile'])
                 ->name('documents.file');
