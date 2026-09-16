@@ -34,9 +34,7 @@ class AppServiceProvider extends ServiceProvider
                 ]);
         });
 
-        // Register Model Observers for status changes and automatic notifications
-        \App\Models\UserProfile::observe(\App\Observers\UserProfileObserver::class);
-        \App\Models\Document::observe(\App\Observers\DocumentObserver::class);
-        \App\Models\Video::observe(\App\Observers\VideoObserver::class);
+        // Individual document/profile updates do not trigger push notifications automatically to avoid spam.
+        // Notifications are sent via the unified bulk actions ("Approve All" / "Reject All").
     }
 }
