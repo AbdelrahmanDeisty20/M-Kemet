@@ -73,7 +73,7 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/notifications/{id}/read', [NotificationController::class, 'readNotification']);
         Route::get('/notifications/read-all', [NotificationController::class, 'readAllNotifications']);
         Route::delete('/notifications/delete-all', [NotificationController::class, 'deleteAllNotifications']);
-        Route::delete('/notifications/{id}', [NotificationController::class, 'deleteNotification']);
+        Route::delete('/notifications/{id}/delete', [NotificationController::class, 'deleteNotification']);
         Route::post('/fcm-token-user', [NotificationController::class, 'sendToken']);
         Route::post('/sendTestNotification', [NotificationController::class, 'sendTestNotificationToUser']);
 
