@@ -9,10 +9,10 @@ use App\Models\Video;
 use App\Services\NotificationService;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -264,8 +264,8 @@ class ViewDocument extends ViewRecord
                                     ->label("سبب الرفض")
                                     ->placeholder("أدخل سبب رفض {$typeLabel}...")
                                     ->rows(2)
-                                    ->required(fn (Get $get) => $get("reject_doc_{$doc->id}"))
-                                    ->visible(fn (Get $get) => $get("reject_doc_{$doc->id}")),
+                                    ->required(fn ($get) => $get("reject_doc_{$doc->id}"))
+                                    ->visible(fn ($get) => $get("reject_doc_{$doc->id}")),
                             ])
                             ->compact();
                     }
@@ -283,8 +283,8 @@ class ViewDocument extends ViewRecord
                                     ->label('سبب رفض الفيديو')
                                     ->placeholder('أدخل سبب رفض الفيديو التعريفي...')
                                     ->rows(2)
-                                    ->required(fn (Get $get) => $get('reject_video'))
-                                    ->visible(fn (Get $get) => $get('reject_video')),
+                                    ->required(fn ($get) => $get('reject_video'))
+                                    ->visible(fn ($get) => $get('reject_video')),
                             ])
                             ->compact();
                     }

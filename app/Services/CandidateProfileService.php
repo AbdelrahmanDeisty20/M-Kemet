@@ -66,6 +66,8 @@ class CandidateProfileService
 
             // Filter out non-profile fields (name, pivot fields) from direct profile update
             $profileData = array_diff_key($data, array_flip(['name', 'target_country_ids']));
+            $profileData['status']           = 'pending';
+            $profileData['rejection_reason'] = null;
             $profile->update($profileData);
 
             // Sync Target Countries
@@ -111,9 +113,9 @@ class CandidateProfileService
             ]);
         }
 
-        // لو الـ profile كان مرفوضاً، أعد حالته لـ pending عشان الأدمن يراجعه تاني
+        // تحويل حالة الملف الشخصي للباحث دائماً إلى pending عند رفع أي وثيقة جديدة
         $profile = $user->candidateProfile()->first(); // fresh query — no cache
-        if ($profile && $profile->status === 'rejected') {
+        if ($profile) {
             $profile->update([
                 'status'           => 'pending',
                 'rejection_reason' => null,
@@ -161,6 +163,15 @@ class CandidateProfileService
                 'duration_seconds' => $durationSeconds ?? 0,
                 'file_size_mb'     => $fileSizeMb,
                 'status'           => 'pending',
+            ]);
+        }
+
+        // تحويل حالة الملف الشخصي للباحث دائماً إلى pending عند رفع فيديو جديد
+        $profile = $user->candidateProfile()->first();
+        if ($profile) {
+            $profile->update([
+                'status'           => 'pending',
+                'rejection_reason' => null,
             ]);
         }
 
