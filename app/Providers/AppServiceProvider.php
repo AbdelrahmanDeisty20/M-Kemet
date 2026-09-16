@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
                 ]);
         });
 
-        // Individual document/profile updates do not trigger push notifications automatically to avoid spam.
-        // Notifications are sent via the unified bulk actions ("Approve All" / "Reject All").
+        // Register Observers
+        \App\Models\Application::observe(\App\Observers\ApplicationObserver::class);
     }
 }

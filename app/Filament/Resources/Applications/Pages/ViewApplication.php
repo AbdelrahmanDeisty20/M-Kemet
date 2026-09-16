@@ -44,7 +44,7 @@ class ViewApplication extends ViewRecord
                     ]);
 
                     Notification::make()
-                        ->title('تم تحديث حالة طلب التواصل بنجاح')
+                        ->title('تم تحديث حالة طلب التواصل بنجاح وإرسال الإشعار للطرفين')
                         ->success()
                         ->send();
                 }),
