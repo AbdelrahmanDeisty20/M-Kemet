@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'email'    => __('validation.attributes.email'),
+            'phone'    => __('validation.attributes.phone'),
             'password' => __('validation.attributes.password'),
         ];
     }
@@ -30,8 +30,8 @@ class LoginRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required'    => __('validation.required', ['attribute' => __('validation.attributes.email')]),
-            'email.email'       => __('validation.email', ['attribute' => __('validation.attributes.email')]),
+            'phone.required'    => __('validation.required', ['attribute' => __('validation.attributes.phone')]),
+            'phone.unique'       => __('validation.unique', ['attribute' => __('validation.attributes.phone')]),
             'password.required' => __('validation.required', ['attribute' => __('validation.attributes.password')]),
         ];
     }
