@@ -16,7 +16,7 @@ class RegisterCandidateRequest extends FormRequest
     {
         return [
             'name'               => ['required', 'string', 'max:255'],
-            'email'              => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'email'              => ['nullable', 'string', 'email', 'max:255', 'unique:users,email'],
             'phone'              => ['required', 'string', 'max:20', 'unique:users,phone'],
             'password'           => ['required', 'confirmed', Password::min(8)],
             'current_country_id' => ['required', 'integer', 'exists:countries,id'],
