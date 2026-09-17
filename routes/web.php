@@ -10,6 +10,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/videos/{video}/stream', function (Video $video) {
+    $disk = 'public';
+    if (!Storage::disk($disk)->exists($video->video_path)) {
+        abort(404, 'الفيديو غير موجود على السيرفر');
+    }
+
+    $path = Storage::disk($disk)->path($video->video_path);
+    $mimeType = Storage::disk($disk)->mimeType($video->video_path) ?: 'video/mp4';
+
+    return response()->file($path, [
+        'Content-Type'        => $mimeType,
+        'Content-Disposition' => 'inline; filename="' . basename($path) . '"',
+    ]);
+})->name('public.videos.stream');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/documents/{document}/file', function (Document $document) {

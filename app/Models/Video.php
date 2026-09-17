@@ -29,6 +29,10 @@ class Video extends Model
             return $this->video_path;
         }
 
+        if (\Illuminate\Support\Facades\Route::has('public.videos.stream')) {
+            return route('public.videos.stream', $this->id);
+        }
+
         $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $this->video_path), '/');
         return asset('storage/' . $cleanPath);
     }
