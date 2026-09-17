@@ -82,9 +82,9 @@ class UserProfileInfolist
                     ->icon('heroicon-o-video-camera')
                     ->columns(3)
                     ->schema([
-                        TextEntry::make('user.video.video_url')
+                        TextEntry::make('user.video.admin_stream_url')
                             ->label('مشاهدة / رابط الفيديو')
-                            ->url(fn ($record) => $record?->user?->video?->video_url, shouldOpenInNewTab: true)
+                            ->url(fn ($record) => $record?->user?->video?->admin_stream_url, shouldOpenInNewTab: true)
                             ->placeholder('لم يتم رفع فيديو تعريفي بعد'),
                         TextEntry::make('user.video.duration_seconds')
                             ->label('مدة الفيديو')

@@ -1,7 +1,7 @@
 @php
     $record = $getRecord();
     $video = $record instanceof \App\Models\Video ? $record : ($record?->video ?? null);
-    $videoUrl = $video?->video_url ?? ($video ? route('admin.videos.stream', $video->id) : null);
+    $videoUrl = $video?->admin_stream_url ?? $video?->video_url;
 @endphp
 
 @if($video)
