@@ -35,7 +35,7 @@ class AuthService
     {
         return DB::transaction(function () use ($data) {
             $user = User::create([
-                'email'     => $data['email'],
+                'email'     => $data['email'] ?? null,
                 'phone'     => $data['phone'],
                 'password'  => Hash::make($data['password']),
                 'user_type' => 'company',
@@ -52,7 +52,7 @@ class AuthService
             
             Otp::create([
                 'user_id'    => $user->id,
-                'email'      => $user->email,
+                'email'      => $user->email ?? null,
                 'phone'      => $user->phone,
                 'code'       => Hash::make($code),
                 'type'       => 'register',
@@ -60,7 +60,7 @@ class AuthService
             ]);
 
             // إرسال الإيميل عبر الـ Queue
-            Mail::to($user->email)->queue(new OtpMail($code, $user->display_name ?? $company->company_name));
+            // Mail::to($user->email)->queue(new OtpMail($code, $user->display_name ?? $company->company_name));
 
             return $this->successResponse([
                 'user'    => new CompanyRegisterResource($user->load('company')),
