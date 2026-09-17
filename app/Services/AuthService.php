@@ -48,17 +48,6 @@ class AuthService
                 'status'       => 'pending',
             ]);
 
-            $code = (string) random_int(100000, 999999);
-            
-            Otp::create([
-                'user_id'    => $user->id,
-                'email'      => $user->email ?? null,
-                'phone'      => $user->phone,
-                'code'       => Hash::make($code),
-                'type'       => 'register',
-                'expires_at' => now()->addMinutes(5),
-            ]);
-
             // إرسال الإيميل عبر الـ Queue
             // Mail::to($user->email)->queue(new OtpMail($code, $user->display_name ?? $company->company_name));
 
@@ -105,16 +94,7 @@ class AuthService
                 'updated_at' => now(),
             ]);
 
-            $code = (string) random_int(100000, 999999);
-
-            Otp::create([
-                'user_id'    => $user->id,
-                'email'      => $user->email,
-                'phone'      => $user->phone,
-                'code'       => Hash::make($code),
-                'type'       => 'register',
-                'expires_at' => now()->addMinutes(5),
-            ]);
+            
 
             // Mail::to($user->email)->queue(new OtpMail($code, $user->display_name));
             return $this->successResponse([
