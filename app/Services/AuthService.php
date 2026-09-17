@@ -217,7 +217,7 @@ class AuthService
      */
     public function login(array $data): JsonResponse
     {
-        $user = User::where('email', $data['email'])->first();
+        $user = User::where('phone', $data['phone'])->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
             return $this->errorResponse(__('messages.invalidCredentials'), 401);
@@ -227,9 +227,9 @@ class AuthService
             return $this->errorResponse(__('messages.userSuspended'), 403);
         }
 
-        if (is_null($user->email_verified_at)) {
-            return $this->errorResponse(__('messages.userPendingVerification'), 403);
-        }
+        // if (is_null($user->email_verified_at)) {
+        //     return $this->errorResponse(__('messages.userPendingVerification'), 403);
+        // }
 
         $authToken = $user->createToken('auth_token')->plainTextToken;
         $plainRefreshToken = Str::random(64);
