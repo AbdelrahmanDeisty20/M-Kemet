@@ -76,7 +76,7 @@ class AuthService
         return DB::transaction(function () use ($data) {
             $user = User::create([
                 'name'       => $data['name'],
-                'email'      => $data['email'],
+                'email'      => $data['email']?? null,
                 'phone'      => $data['phone'],
                 'country_id' => $data['current_country_id'],
                 'password'   => Hash::make($data['password']),
@@ -116,7 +116,7 @@ class AuthService
                 'expires_at' => now()->addMinutes(5),
             ]);
 
-            Mail::to($user->email)->queue(new OtpMail($code, $user->display_name));
+            // Mail::to($user->email)->queue(new OtpMail($code, $user->display_name));
             return $this->successResponse([
                 'user' => new CandidateRegisterResource($user->load('country', 'candidateProfile.genderRelation')),  
             ], __('messages.accountCreatedSuccessfully'), 201);

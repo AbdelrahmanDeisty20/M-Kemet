@@ -17,7 +17,7 @@ return [
     'termsFetchedSuccessfully'            => 'Terms retrieved successfully',
 
     // Authentication Messages
-    'accountCreatedSuccessfully'     => 'Account created successfully. Please enter the 6-digit OTP sent to your email.',
+    'accountCreatedSuccessfully'     => 'Account created successfully.',
     'otpVerifiedSuccessfully'        => 'Account activated and logged in successfully',
     'otp_invalid'                    => 'The verification code is invalid or missing',
     'otp_expired'                    => 'The verification code has expired. Please request a new code.',
