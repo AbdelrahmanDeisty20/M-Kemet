@@ -21,11 +21,11 @@ class ApplicationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.user_management');
+        return 'طلبات التواصل والتوظيف';
     }
 
     public static function getNavigationLabel(): string

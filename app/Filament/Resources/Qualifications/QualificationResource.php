@@ -20,7 +20,7 @@ class QualificationResource extends Resource
 {
     protected static ?string $model = Qualification::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?int $navigationSort = 2;
 
@@ -28,7 +28,7 @@ class QualificationResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.data_references');
+        return 'البيانات والمرجعيات';
     }
 
     public static function getNavigationLabel(): string

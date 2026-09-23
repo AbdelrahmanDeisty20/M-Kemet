@@ -22,13 +22,24 @@ class CompanyResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'company_name';
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.user_management');
+        return 'إدارة المستخدمين والباحثين';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Company::where('status', 'pending')->count();
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'amber';
     }
 
     public static function getNavigationLabel(): string

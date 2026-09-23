@@ -20,7 +20,7 @@ class ProfessionResource extends Resource
 {
     protected static ?string $model = Profession::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
     protected static ?int $navigationSort = 1;
 
@@ -28,7 +28,7 @@ class ProfessionResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.data_references');
+        return 'البيانات والمرجعيات';
     }
 
     public static function getNavigationLabel(): string

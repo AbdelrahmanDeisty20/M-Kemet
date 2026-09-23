@@ -20,15 +20,26 @@ class UserProfileResource extends Resource
 {
     protected static ?string $model = UserProfile::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserCircle;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'qualification';
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.user_management');
+        return 'إدارة المستخدمين والباحثين';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = UserProfile::where('status', 'pending')->count();
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
     }
 
     public static function getNavigationLabel(): string

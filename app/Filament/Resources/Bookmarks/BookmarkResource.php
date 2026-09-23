@@ -16,11 +16,11 @@ class BookmarkResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookmark;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.user_management');
+        return 'طلبات التواصل والتوظيف';
     }
 
     public static function getNavigationLabel(): string

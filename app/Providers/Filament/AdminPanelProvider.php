@@ -29,15 +29,21 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName(fn () => app()->getLocale() === 'ar' ? 'منصة أم كميت | M-Kemet' : 'M-Kemet Platform')
+            ->brandName(fn () => app()->getLocale() === 'ar' ? '👑 منصة أم كميت | M-Kemet' : 'M-Kemet Platform')
             ->colors([
-                'primary' => Color::Sky,
+                'primary' => Color::Amber,
+                'gray'    => Color::Slate,
+                'info'    => Color::Sky,
+                'success' => Color::Emerald,
+                'warning' => Color::Amber,
+                'danger'  => Color::Rose,
             ])
             ->navigationGroups([
-                __('admin.user_management'),
-                __('admin.content_documents'),
-                __('admin.data_references'),
-                __('admin.access_permissions'),
+                'إدارة المستخدمين والباحثين',
+                'إدارة المحتوى والمستندات',
+                'طلبات التواصل والتوظيف',
+                'البيانات والمرجعيات',
+                'الصلاحيات والأمان',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -47,7 +53,10 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                \App\Filament\Widgets\StatsOverviewWidget::class,
+                \App\Filament\Widgets\UsersRegistrationChartWidget::class,
+                \App\Filament\Widgets\CandidateStatusChartWidget::class,
+                \App\Filament\Widgets\LatestCandidatesWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

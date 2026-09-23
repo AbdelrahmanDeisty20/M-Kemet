@@ -22,13 +22,13 @@ class AppNotificationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBell;
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $recordTitleAttribute = 'title_ar';
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.user_management');
+        return 'طلبات التواصل والتوظيف';
     }
 
     public static function getNavigationLabel(): string

@@ -22,13 +22,24 @@ class VideoResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedVideoCamera;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'user_id';
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.content_documents');
+        return 'إدارة المحتوى والمستندات';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Video::where('status', 'pending')->count();
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
     }
 
     public static function getNavigationLabel(): string

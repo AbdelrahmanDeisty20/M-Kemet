@@ -28,7 +28,7 @@ class CountryResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.data_references');
+        return 'البيانات والمرجعيات';
     }
 
     public static function getNavigationLabel(): string
