@@ -27,6 +27,20 @@ class DocumentResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = User::whereHas('candidateProfile', fn ($q) => $q->where('status', 'pending'))
+            ->orWhereHas('documents', fn ($q) => $q->where('is_approved', false)->whereNull('rejection_reason'))
+            ->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'amber';
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return 'إدارة المحتوى والمستندات';

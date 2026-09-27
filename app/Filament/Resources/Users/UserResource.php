@@ -26,6 +26,18 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = User::where('status', 'pending')->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'amber';
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return 'إدارة المستخدمين والباحثين';

@@ -18,6 +18,18 @@ class BookmarkResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Bookmark::count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'info';
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return 'طلبات التواصل والتوظيف';

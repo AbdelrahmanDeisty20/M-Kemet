@@ -23,6 +23,18 @@ class ApplicationResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Application::where('status', 'pending')->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'amber';
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return 'طلبات التواصل والتوظيف';
