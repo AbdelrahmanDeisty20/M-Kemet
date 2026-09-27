@@ -22,11 +22,11 @@ class DocumentsTable
             ->columns([
                 TextColumn::make('name')
                     ->label('المستخدم / المرشح')
-                    ->default(fn ($record) => $record->phone ?? $record->email ?? '-')
+                    ->default(fn ($record) => $record->phone ?? '-')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('email')
-                    ->label('البريد الإلكتروني')
+                TextColumn::make('phone')
+                    ->label('رقم الهاتف')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('approval_summary')

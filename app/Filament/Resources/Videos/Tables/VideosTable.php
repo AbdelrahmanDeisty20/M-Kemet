@@ -20,8 +20,8 @@ class VideosTable
                     ->label('المرشح / صاحب الفيديو')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('user.email')
-                    ->label('البريد الإلكتروني')
+                TextColumn::make('user.phone')
+                    ->label('رقم الهاتف')
                     ->searchable(),
                 TextColumn::make('status')
                     ->label('حالة الاعتماد')

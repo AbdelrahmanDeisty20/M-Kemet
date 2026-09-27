@@ -17,14 +17,10 @@ class UserForm
                     ->label('الاسم الكامل')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('email')
-                    ->label('البريد الإلكتروني')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
                 TextInput::make('phone')
                     ->label('رقم الهاتف')
                     ->tel()
+                    ->required()
                     ->maxLength(20),
                 Select::make('user_type')
                     ->label('نوع المستخدم')
@@ -49,8 +45,6 @@ class UserForm
                     ->relationship('roles', 'name')
                     ->multiple()
                     ->preload(),
-                DateTimePicker::make('email_verified_at')
-                    ->label('تاريخ التحقق من البريد'),
                 TextInput::make('password')
                     ->label('كلمة المرور')
                     ->password()

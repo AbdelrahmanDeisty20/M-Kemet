@@ -20,6 +20,9 @@ class CompaniesTable
                     ->label('المستخدم المرتبط')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('user.phone')
+                    ->label('رقم الهاتف')
+                    ->searchable(),
                 TextColumn::make('company_name')
                     ->label('اسم الشركة')
                     ->searchable()

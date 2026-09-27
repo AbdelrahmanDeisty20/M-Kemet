@@ -20,10 +20,6 @@ class UsersTable
                     ->label('الاسم الكامل')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('email')
-                    ->label('البريد الإلكتروني')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('phone')
                     ->label('رقم الهاتف')
                     ->searchable(),

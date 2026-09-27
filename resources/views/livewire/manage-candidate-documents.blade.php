@@ -9,8 +9,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold text-white">{{ $user->name ?? $user->phone ?? $user->email }}</h2>
-                    <p class="text-sm text-slate-400 font-mono">{{ $user->email }}</p>
+                    <h2 class="text-xl font-bold text-white">{{ $user->name ?? $user->phone }}</h2>
                 </div>
             </div>
 

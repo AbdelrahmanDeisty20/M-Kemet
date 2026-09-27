@@ -19,9 +19,6 @@ class UserInfolist
                         TextEntry::make('name')
                             ->label('الاسم الكامل')
                             ->placeholder('-'),
-                        TextEntry::make('email')
-                            ->label('البريد الإلكتروني')
-                            ->placeholder('-'),
                         TextEntry::make('phone')
                             ->label('رقم الهاتف')
                             ->placeholder('-'),
@@ -69,10 +66,6 @@ class UserInfolist
                         TextEntry::make('country.name_ar')
                             ->label('الدولة')
                             ->placeholder('-'),
-                        TextEntry::make('email_verified_at')
-                            ->label('تاريخ تفعيل البريد')
-                            ->dateTime('Y-m-d H:i')
-                            ->placeholder('غير مفعل'),
                     ]),
 
                 Section::make('التواريخ والسجلات')

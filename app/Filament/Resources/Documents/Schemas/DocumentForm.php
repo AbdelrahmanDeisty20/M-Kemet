@@ -24,8 +24,8 @@ class DocumentForm
                         TextInput::make('name')
                             ->label('اسم المستخدم')
                             ->disabled(),
-                        TextInput::make('email')
-                            ->label('البريد الإلكتروني')
+                        TextInput::make('phone')
+                            ->label('رقم الهاتف')
                             ->disabled(),
                     ]),
 

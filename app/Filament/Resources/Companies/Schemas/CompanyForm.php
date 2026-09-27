@@ -20,9 +20,9 @@ class CompanyForm
                     ->schema([
                         Select::make('user_id')
                             ->label('المستخدم المسؤول')
-                            ->relationship('user', 'name', modifyQueryUsing: fn ($query) => $query->select(['id', 'name', 'phone', 'email']))
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name ?: ($record->phone ?: ($record->email ?: "مستخدم #{$record->id}")))
-                            ->searchable(['name', 'phone', 'email'])
+                            ->relationship('user', 'name', modifyQueryUsing: fn ($query) => $query->select(['id', 'name', 'phone']))
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name ?: ($record->phone ?: "مستخدم #{$record->id}"))
+                            ->searchable(['name', 'phone'])
                             ->preload()
                             ->required(),
                         TextInput::make('company_name')

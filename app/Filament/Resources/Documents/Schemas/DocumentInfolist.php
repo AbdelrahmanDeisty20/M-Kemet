@@ -25,10 +25,7 @@ class DocumentInfolist
                     ->schema([
                         TextEntry::make('name')
                             ->label('اسم المرشح / المستخدم')
-                            ->default(fn ($record) => $record->phone ?? $record->email ?? '-'),
-                        TextEntry::make('email')
-                            ->label('البريد الإلكتروني')
-                            ->placeholder('-'),
+                            ->default(fn ($record) => $record->phone ?? '-'),
                         TextEntry::make('phone')
                             ->label('رقم الهاتف')
                             ->placeholder('-'),

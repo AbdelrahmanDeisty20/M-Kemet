@@ -24,9 +24,6 @@ class VideoInfolist
                         TextEntry::make('user.name')
                             ->label('الاسم الكامل')
                             ->placeholder('-'),
-                        TextEntry::make('user.email')
-                            ->label('البريد الإلكتروني')
-                            ->placeholder('-'),
                         TextEntry::make('user.phone')
                             ->label('رقم الهاتف')
                             ->placeholder('-'),

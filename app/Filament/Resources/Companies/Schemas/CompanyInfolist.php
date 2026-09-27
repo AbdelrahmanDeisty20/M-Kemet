@@ -30,9 +30,6 @@ class CompanyInfolist
                         TextEntry::make('user.name')
                             ->label('المستخدم المسؤول')
                             ->placeholder('-'),
-                        TextEntry::make('user.email')
-                            ->label('البريد الإلكتروني للتواصل')
-                            ->placeholder('-'),
                         TextEntry::make('user.phone')
                             ->label('رقم الهاتف')
                             ->placeholder('-'),
