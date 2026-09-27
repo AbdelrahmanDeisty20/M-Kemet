@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Filament\Resources\Applications\ApplicationResource;
+use App\Filament\Resources\Companies\CompanyResource;
 use App\Filament\Resources\Documents\DocumentResource;
+use App\Filament\Resources\Users\UserResource;
 use App\Models\Application;
 use App\Models\User;
 use Filament\Notifications\Actions\Action;
@@ -34,12 +36,18 @@ class AdminNotificationService
             $body = "قامت الشركة ({$companyName}) بالانضمام للمنصة.\n📱 رقم الهاتف: {$user->phone}";
             $color = 'info';
             $icon = 'heroicon-o-building-office-2';
+
+            $viewUrl = $user->company 
+                ? CompanyResource::getUrl('view', ['record' => $user->company->id])
+                : UserResource::getUrl('view', ['record' => $user->id]);
         } else {
             $candidateName = $user->name ?? 'مرشح جديد';
             $title = 'تسجيل حساب باحث عن عمل جديد 👤';
             $body = "قام الباحث عن العمل ({$candidateName}) بالانضمام للمنصة.\n📱 رقم الهاتف: {$user->phone}";
             $color = 'success';
             $icon = 'heroicon-o-user-plus';
+
+            $viewUrl = DocumentResource::getUrl('view', ['record' => $user->id]);
         }
 
         Notification::make()
@@ -47,6 +55,12 @@ class AdminNotificationService
             ->body($body)
             ->icon($icon)
             ->color($color)
+            ->actions([
+                Action::make('view_details')
+                    ->label('عرض التفاصيل 👁️')
+                    ->button()
+                    ->url($viewUrl),
+            ])
             ->sendToDatabase($admins);
     }
 
@@ -113,8 +127,9 @@ class AdminNotificationService
             ->icon('heroicon-o-document-check')
             ->color('warning')
             ->actions([
-                Action::make('view_documents')
-                    ->label('معاينة المستندات')
+                Action::make('view_details')
+                    ->label('عرض التفاصيل 👁️')
+                    ->button()
                     ->url($viewUrl),
             ])
             ->sendToDatabase($admins);
@@ -134,11 +149,19 @@ class AdminNotificationService
         $title = 'حذف حساب من المنصة ❌';
         $body = "قام حساب ({$typeLabel}: {$name}) بحذف حسابه نهائياً من المنصة.\n📱 رقم الهاتف: {$user->phone}";
 
+        $viewUrl = UserResource::getUrl('index');
+
         Notification::make()
             ->title($title)
             ->body($body)
             ->icon('heroicon-o-trash')
             ->color('danger')
+            ->actions([
+                Action::make('view_details')
+                    ->label('عرض القائمة 👁️')
+                    ->button()
+                    ->url($viewUrl),
+            ])
             ->sendToDatabase($admins);
     }
 
@@ -177,8 +200,9 @@ class AdminNotificationService
             ->icon('heroicon-o-briefcase')
             ->color('primary')
             ->actions([
-                Action::make('view_application')
-                    ->label('عرض طلب التواصل')
+                Action::make('view_details')
+                    ->label('عرض التفاصيل 👁️')
+                    ->button()
                     ->url($viewUrl),
             ])
             ->sendToDatabase($admins);
