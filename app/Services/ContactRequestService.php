@@ -79,6 +79,9 @@ class ContactRequestService
             'notes'              => 'إرسال طلب تواصل جديد من الشركة',
         ]);
 
+        // إرسال إشعار للأدمن بطلب التواصل الجديد باسم الشركة ورقم هاتفها والباحث عن العمل ورقم هاتفه
+        \App\Services\AdminNotificationService::notifyContactRequestSent($application);
+
         return $this->successResponse([
             'application'  => new ApplicationResource($application->load(['company', 'candidateProfile'])),
             'already_sent' => false,

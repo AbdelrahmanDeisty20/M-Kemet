@@ -48,8 +48,8 @@ class AuthService
                 'status'       => 'pending',
             ]);
 
-            // إرسال الإيميل عبر الـ Queue
-            // Mail::to($user->email)->queue(new OtpMail($code, $user->display_name ?? $company->company_name));
+            // إرسال إشعار للأدمن بتسجيل شركة جديدة
+            \App\Services\AdminNotificationService::notifyNewUserRegistered($user);
 
             return $this->successResponse([
                 'user'    => new CompanyRegisterResource($user->load('company')),
@@ -94,9 +94,9 @@ class AuthService
                 'updated_at' => now(),
             ]);
 
-            
+            // إرسال إشعار للأدمن بتسجيل باحث عن عمل جديد
+            \App\Services\AdminNotificationService::notifyNewUserRegistered($user);
 
-            // Mail::to($user->email)->queue(new OtpMail($code, $user->display_name));
             return $this->successResponse([
                 'user' => new CandidateRegisterResource($user->load('country', 'candidateProfile.genderRelation')),  
             ], __('messages.accountCreatedSuccessfully'), 201);
@@ -332,6 +332,9 @@ class AuthService
             // Revoke all tokens
             $user->tokens()->delete();
             RefreshToken::where('user_id', $user->id)->delete();
+
+            // إرسال إشعار للأدمن بحذف الحساب قبل اكمال عملية الحذف
+            \App\Services\AdminNotificationService::notifyAccountDeleted($user);
 
             // Delete user record (cascades to profile, company, documents, applications, etc.)
             $user->delete();

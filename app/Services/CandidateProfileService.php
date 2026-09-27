@@ -122,6 +122,9 @@ class CandidateProfileService
             ]);
         }
 
+        // إرسال إشعار موحد للأدمن بالوثائق المرفوعة والمتبقية للمرشح
+        \App\Services\AdminNotificationService::notifyDocumentUploaded($user);
+
         return $this->successResponse([
             'document' => [
                 'id'            => $document->id,
@@ -174,6 +177,9 @@ class CandidateProfileService
                 'rejection_reason' => null,
             ]);
         }
+
+        // إرسال إشعار موحد للأدمن بالوثائق المرفوعة والمتبقية للمرشح
+        \App\Services\AdminNotificationService::notifyDocumentUploaded($user);
 
         return $this->successResponse([
             'video' => [
