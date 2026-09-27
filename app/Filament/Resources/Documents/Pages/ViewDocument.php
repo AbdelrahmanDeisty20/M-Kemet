@@ -20,11 +20,27 @@ class ViewDocument extends ViewRecord
 {
     protected static string $resource = DocumentResource::class;
 
+    public function getTitle(): string|\Illuminate\Contracts\Support\Htmlable
+    {
+        $user = $this->getRecord();
+        return $user->name ?? $user->phone ?? $user->email ?? 'مستندات المرشح';
+    }
+
+    public function getHeader(): ?\Illuminate\Contracts\View\View
+    {
+        return view('filament.resources.documents.header', [
+            'title'       => $this->getTitle(),
+            'breadcrumbs' => $this->getBreadcrumbs(),
+            'actions'     => $this->getCachedHeaderActions(),
+            'record'      => $this->getRecord(),
+        ]);
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             Action::make('approve_all')
-                ->label('قبول واعتماد كافة المستندات والباحث عن العمل')
+                ->label('قبول واعتماد الكل')
                 ->icon('heroicon-o-check-badge')
                 ->color('success')
                 ->requiresConfirmation()
@@ -86,7 +102,7 @@ class ViewDocument extends ViewRecord
                 }),
 
             Action::make('reject_all')
-                ->label('رفض كافة المستندات والباحث عن العمل')
+                ->label('رفض الكل')
                 ->icon('heroicon-o-x-circle')
                 ->color('danger')
                 ->modalHeading('تحديد أسباب الرفض للمستندات والملف الشخصي')
@@ -233,7 +249,7 @@ class ViewDocument extends ViewRecord
                 }),
 
             Action::make('reject_partial')
-                ->label('رفض بعض المستندات فقط')
+                ->label('رفض مستندات محددة')
                 ->icon('heroicon-o-exclamation-triangle')
                 ->color('warning')
                 ->modalHeading('رفض مستندات محددة')
