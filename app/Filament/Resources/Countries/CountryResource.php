@@ -26,6 +26,17 @@ class CountryResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name_ar';
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Country::count();
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'info';
+    }
+
     public static function getNavigationGroup(): ?string
     {
         return 'البيانات والمرجعيات';
