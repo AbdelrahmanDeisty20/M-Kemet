@@ -30,6 +30,11 @@
                         🚫 لا يوجد فيديو تعريفي
                     </span>
                 @endif
+                @if($user->documents->isNotEmpty() || $user->video)
+                    <button type="button" wire:click="deleteAllDocuments" wire:confirm="هل أنت متأكد من حذف جميع المستندات والوثائق لهذا المرشح؟ لن يتم حذف الحساب." class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white border border-red-500/30 transition cursor-pointer">
+                        🗑️ حذف جميع الوثائق
+                    </button>
+                @endif
             </div>
         </div>
     </div>
@@ -114,6 +119,9 @@
                             </button>
                             <button type="button" wire:click="pendingVideo" class="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow-md transition">
                                 ⏳ قيد المراجعة
+                            </button>
+                            <button type="button" wire:click="deleteVideo" wire:confirm="هل أنت متأكد من حذف الفيديو التعريفي لهذا المرشح؟" class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-red-700 text-red-400 hover:text-white font-bold text-xs rounded-xl shadow-md transition border border-red-900/40">
+                                🗑️ حذف الفيديو
                             </button>
                         </div>
 
@@ -258,6 +266,9 @@
                                 </button>
                                 <button type="button" wire:click="toggleEditReason({{ $doc->id }})" class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-lg shadow-sm transition">
                                     ✕ رفض
+                                </button>
+                                <button type="button" wire:click="deleteDocument({{ $doc->id }})" wire:confirm="هل أنت متأكد من حذف هذا المستند؟" class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-800 hover:bg-red-700 text-red-400 hover:text-white text-xs font-bold rounded-lg shadow-sm transition border border-red-900/40">
+                                    🗑️ حذف
                                 </button>
                             </div>
 

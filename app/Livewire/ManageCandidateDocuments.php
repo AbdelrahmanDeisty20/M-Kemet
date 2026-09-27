@@ -140,6 +140,61 @@ class ManageCandidateDocuments extends Component
             ->send();
     }
 
+    public function deleteDocument($documentId)
+    {
+        $document = Document::findOrFail($documentId);
+        $typeLabel = $document->document_type_name;
+
+        \App\Filament\Resources\Documents\DocumentResource::deleteSingleDocument($document);
+
+        unset($this->rejectionReasons[$documentId]);
+        unset($this->editingReason[$documentId]);
+
+        $this->user->load('documents');
+
+        Notification::make()
+            ->title('تم حذف المستند بنجاح')
+            ->body('تم حذف مستند (' . $typeLabel . ') وملفه بدون حذف الحساب.')
+            ->success()
+            ->send();
+    }
+
+    public function deleteVideo()
+    {
+        if (!$this->user->video) return;
+
+        \App\Filament\Resources\Documents\DocumentResource::deleteSingleVideo($this->user->video);
+
+        $this->videoRejectionReason = null;
+        $this->editingVideoReason = false;
+
+        $this->user->load('video');
+
+        Notification::make()
+            ->title('تم حذف الفيديو بنجاح')
+            ->body('تم حذف الفيديو التعريفي للمرشح دون حذف الحساب.')
+            ->success()
+            ->send();
+    }
+
+    public function deleteAllDocuments()
+    {
+        \App\Filament\Resources\Documents\DocumentResource::deleteUserDocuments($this->user);
+
+        $this->rejectionReasons = [];
+        $this->editingReason = [];
+        $this->videoRejectionReason = null;
+        $this->editingVideoReason = false;
+
+        $this->user->load(['documents', 'video']);
+
+        Notification::make()
+            ->title('تم حذف جميع الوثائق بنجاح')
+            ->body('تم حذف كافة المستندات والفيديو لهذا المرشح مع بقاء حسابه فعالاً.')
+            ->success()
+            ->send();
+    }
+
     public function render()
     {
         return view('livewire.manage-candidate-documents');

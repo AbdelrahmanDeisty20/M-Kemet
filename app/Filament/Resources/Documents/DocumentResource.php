@@ -86,4 +86,47 @@ class DocumentResource extends Resource
             'edit' => EditDocument::route('/{record}/edit'),
         ];
     }
+
+    public static function deleteUserDocuments(User $user): void
+    {
+        foreach ($user->documents as $doc) {
+            static::deleteSingleDocument($doc);
+        }
+
+        if ($user->video) {
+            static::deleteSingleVideo($user->video);
+        }
+    }
+
+    public static function deleteSingleDocument(\App\Models\Document $doc): void
+    {
+        if ($doc->file_path) {
+            $disk = $doc->disk ?? 'public';
+            $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $doc->file_path), '/');
+            if (\Illuminate\Support\Facades\Storage::disk($disk)->exists($cleanPath)) {
+                \Illuminate\Support\Facades\Storage::disk($disk)->delete($cleanPath);
+            }
+            if ($disk !== 'public' && \Illuminate\Support\Facades\Storage::disk('public')->exists($cleanPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($cleanPath);
+            }
+        }
+        $doc->delete();
+    }
+
+    public static function deleteSingleVideo(\App\Models\Video $video): void
+    {
+        if ($video->video_path) {
+            $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $video->video_path), '/');
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($cleanPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($cleanPath);
+            }
+        }
+        if ($video->thumbnail_path) {
+            $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $video->thumbnail_path), '/');
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($cleanPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($cleanPath);
+            }
+        }
+        $video->delete();
+    }
 }

@@ -2,12 +2,17 @@
 
 namespace App\Filament\Resources\Documents\Tables;
 
+use App\Filament\Resources\Documents\DocumentResource;
+use App\Models\User;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class DocumentsTable
 {
@@ -68,10 +73,37 @@ class DocumentsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make()
+                    ->label('حذف الوثائق')
+                    ->modalHeading('حذف وثائق المستندات')
+                    ->modalDescription('هل أنت متأكد من حذف جميع المستندات والوثائق المرفوعة لهذا الحساب؟ لن يتم حذف حساب المستخدم.')
+                    ->action(function (User $record) {
+                        DocumentResource::deleteUserDocuments($record);
+
+                        Notification::make()
+                            ->title('تم حذف الوثائق بنجاح')
+                            ->body('تم حذف كافة مستندات ووثائق المستخدم دون حذف الحساب.')
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->label('حذف الوثائق للمحددين')
+                        ->modalHeading('حذف وثائق المستندات للمستخدمين المحددين')
+                        ->modalDescription('هل أنت متأكد من حذف كافة المستندات والوثائق للحسابات المحددة؟ لن يتم حذف حسابات المستخدمين.')
+                        ->action(function (Collection $records) {
+                            foreach ($records as $record) {
+                                DocumentResource::deleteUserDocuments($record);
+                            }
+
+                            Notification::make()
+                                ->title('تم حذف الوثائق بنجاح')
+                                ->body('تم حذف كافة المستندات والوثائق للمستخدمين المحددين بنجاح بدون حذف الحسابات.')
+                                ->success()
+                                ->send();
+                        }),
                 ]),
             ]);
     }

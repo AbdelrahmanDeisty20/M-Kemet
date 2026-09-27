@@ -387,6 +387,26 @@ class ViewDocument extends ViewRecord
                     return redirect(DocumentResource::getUrl('view', ['record' => $user->id]));
                 }),
 
+            Action::make('delete_documents')
+                ->label('حذف كافة الوثائق')
+                ->icon('heroicon-o-trash')
+                ->color('danger')
+                ->requiresConfirmation()
+                ->modalHeading('حذف كافة وثائق المستندات')
+                ->modalDescription('هل أنت متأكد من حذف جميع المستندات والوثائق المرفوعة لهذا الحساب؟ لن يتم حذف حساب المستخدم.')
+                ->action(function () {
+                    $user = $this->getRecord();
+                    DocumentResource::deleteUserDocuments($user);
+
+                    Notification::make()
+                        ->title('تم حذف الوثائق بنجاح')
+                        ->body('تم حذف جميع مستندات ووثائق المستخدم دون حذف الحساب.')
+                        ->success()
+                        ->send();
+
+                    return redirect(DocumentResource::getUrl('index'));
+                }),
+
             EditAction::make()
                 ->label('تعديل التفاصيل'),
         ];
