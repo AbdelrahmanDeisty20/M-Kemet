@@ -17,8 +17,17 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('الاسم الكامل')
-                    ->searchable()
+                    ->label('الاسم / اسم الشركة')
+                    ->state(function (User $record): string {
+                        if ($record->user_type === 'company') {
+                            return $record->company?->company_name ?? $record->name ?? '-';
+                        }
+                        return $record->name ?? '-';
+                    })
+                    ->searchable(query: function ($query, string $search) {
+                        $query->where('name', 'like', "%{$search}%")
+                            ->orWhereHas('company', fn ($q) => $q->where('company_name', 'like', "%{$search}%"));
+                    })
                     ->sortable(),
                 TextColumn::make('phone')
                     ->label('رقم الهاتف')

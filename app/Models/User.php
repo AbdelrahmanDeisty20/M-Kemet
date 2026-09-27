@@ -153,7 +153,10 @@ class User extends Authenticatable
 
     public function getDisplayNameAttribute(): ?string
     {
-        return $this->name ?? $this->company?->company_name;
+        if ($this->user_type === 'company') {
+            return $this->company?->company_name ?? $this->name ?? $this->phone;
+        }
+        return $this->name ?? $this->company?->company_name ?? $this->phone;
     }
 
     public function getIsCandidateAttribute(): bool

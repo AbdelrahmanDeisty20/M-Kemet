@@ -58,6 +58,11 @@ class UserResource extends Resource
         return __('admin.users');
     }
 
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->with(['company', 'roles']);
+    }
+
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);
