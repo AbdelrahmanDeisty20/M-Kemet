@@ -16,17 +16,17 @@ class CompaniesTable
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')
-                    ->label('المستخدم المرتبط')
-                    ->searchable()
+                TextColumn::make('company_name')
+                    ->label('الشركة')
+                    ->state(fn ($record) => $record->company_name ?? $record->user?->name ?? '-')
+                    ->searchable(query: function ($query, string $search) {
+                        $query->where('company_name', 'like', "%{$search}%")
+                            ->orWhereHas('user', fn ($q) => $q->where('name', 'like', "%{$search}%"));
+                    })
                     ->sortable(),
                 TextColumn::make('user.phone')
                     ->label('رقم الهاتف')
                     ->searchable(),
-                TextColumn::make('company_name')
-                    ->label('اسم الشركة')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('status')
                     ->label('حالة الشركة')
                     ->badge()
