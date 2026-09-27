@@ -29,7 +29,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName(fn () => app()->getLocale() === 'ar' ? '👑 منصة أم كميت | M-Kemet' : 'M-Kemet Platform')
+            ->brandLogo(fn () => view('filament.components.brand'))
+            ->brandLogoHeight('2.75rem')
+            ->favicon(asset('images/logo.png'))
             ->colors([
                 'primary' => Color::Amber,
                 'gray'    => Color::Slate,
