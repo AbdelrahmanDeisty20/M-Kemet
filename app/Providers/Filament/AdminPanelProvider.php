@@ -38,6 +38,8 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
                 'danger'  => Color::Rose,
             ])
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->navigationGroups([
                 'إدارة المستخدمين والباحثين',
                 'إدارة المحتوى والمستندات',
