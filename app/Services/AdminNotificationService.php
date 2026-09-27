@@ -8,7 +8,7 @@ use App\Filament\Resources\Documents\DocumentResource;
 use App\Filament\Resources\Users\UserResource;
 use App\Models\Application;
 use App\Models\User;
-use Filament\Notifications\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 
 class AdminNotificationService
