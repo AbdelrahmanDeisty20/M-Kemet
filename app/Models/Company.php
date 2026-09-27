@@ -20,6 +20,10 @@ class Company extends Model
         'rejection_reason',
     ];
 
+    protected $attributes = [
+        'status' => 'approved',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

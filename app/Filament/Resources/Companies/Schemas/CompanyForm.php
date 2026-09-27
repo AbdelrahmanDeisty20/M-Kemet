@@ -48,7 +48,7 @@ class CompanyForm
                                 'approved' => 'معتمدة',
                                 'rejected' => 'مرفوضة',
                             ])
-                            ->default('pending')
+                            ->default('approved')
                             ->required(),
                         Textarea::make('rejection_reason')
                             ->label('سبب الرفض (إن وجد)')

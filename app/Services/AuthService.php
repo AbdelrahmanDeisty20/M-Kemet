@@ -39,13 +39,13 @@ class AuthService
                 'phone'     => $data['phone'],
                 'password'  => Hash::make($data['password']),
                 'user_type' => 'company',
-                'status'    => 'pending',
+                'status'    => 'active',
             ]);
 
             $company = Company::create([
                 'user_id'      => $user->id,
                 'company_name' => $data['company_name'] ?? $data['name'],
-                'status'       => 'pending',
+                'status'       => 'approved',
             ]);
 
             // إرسال إشعار للأدمن بتسجيل شركة جديدة

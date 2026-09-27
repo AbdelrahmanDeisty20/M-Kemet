@@ -33,8 +33,7 @@ class CompanyResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $count = Company::where('status', 'pending')->count();
-        return $count > 0 ? (string) $count : null;
+        return null;
     }
 
     public static function getNavigationBadgeColor(): ?string
