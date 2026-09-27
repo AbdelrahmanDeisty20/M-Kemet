@@ -18,7 +18,6 @@ class CandidateProfileResource extends JsonResource
             'id'                     => $this->id,
             'user_id'                => $this->user_id,
             'name'                   => $this->user?->name,
-            'email'                  => $this->user?->email,
             'phone'                  => $this->user?->phone,
             'birth_date'             => $this->birth_date?->format('Y-m-d'),
             'age'                    => $this->age,
